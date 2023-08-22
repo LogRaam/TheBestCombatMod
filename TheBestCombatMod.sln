@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBestCombatMod", "TheBestCombatMod\TheBestCombatMod.csproj", "{B272414D-BE62-4F60-9135-C28AE005292D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ideas", "Ideas", "{31553681-11AF-4533-8CE8-FA9C59D486DA}"
+	ProjectSection(SolutionItems) = preProject
+		Features.txt = Features.txt
+		TheBestCombatMod\HealthOnHit.cs = TheBestCombatMod\HealthOnHit.cs
+		TheBestCombatMod\PostfixPatch.cs = TheBestCombatMod\PostfixPatch.cs
+		TheBestCombatMod\PrefixPatch.cs = TheBestCombatMod\PrefixPatch.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogRaamConfiguration", "R:\OneDrive\Programmation\LogRaamConfiguration\LogRaamConfiguration.csproj", "{63C69457-654C-4346-8254-7F06FB5D983A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBestCombatModTest", "TheBestCombatModTest\TheBestCombatModTest.csproj", "{3E1A1991-2660-4DCA-A75D-FA8EDAA1E35D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B272414D-BE62-4F60-9135-C28AE005292D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B272414D-BE62-4F60-9135-C28AE005292D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B272414D-BE62-4F60-9135-C28AE005292D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B272414D-BE62-4F60-9135-C28AE005292D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C69457-654C-4346-8254-7F06FB5D983A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C69457-654C-4346-8254-7F06FB5D983A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C69457-654C-4346-8254-7F06FB5D983A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C69457-654C-4346-8254-7F06FB5D983A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E1A1991-2660-4DCA-A75D-FA8EDAA1E35D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E1A1991-2660-4DCA-A75D-FA8EDAA1E35D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E1A1991-2660-4DCA-A75D-FA8EDAA1E35D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E1A1991-2660-4DCA-A75D-FA8EDAA1E35D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB39FF90-F20E-4C75-920B-18084463F450}
+	EndGlobalSection
+EndGlobal

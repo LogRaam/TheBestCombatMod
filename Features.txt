@@ -1,0 +1,9 @@
+[] Gives bonus if victime receive blow on back
+[] Take into account if attacker is on horse
+[] Reduce stagger chance if a peasant
+[] Add dismount chance if rider receive several blows in a short laps of time
+[] Apply different staggering effect if target health is low on footmen
+[x] Get armor type for hit zone
+[x] Get weapon used for hit
+[x] Apply damage effect or armor penetration effect based on weapon used and armor type
+
