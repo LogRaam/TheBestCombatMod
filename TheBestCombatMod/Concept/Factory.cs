@@ -14,6 +14,7 @@ namespace TheBestCombatMod.Concept
    public interface Factory
    {
       BodyPart AbdomenUnseatProbability { get; set; }
+      ArmorResistance ArmorMaterialUnseatResistance { get; set; }
       BodyPart ArmsUnseatProbability { get; set; }
       AttackerOptions AttackerOptions { get; set; }
       BodyPart ChestUnseatProbability { get; set; }
@@ -43,6 +44,10 @@ namespace TheBestCombatMod.Concept
       WeaponStaggerForce WeaponStaggerForceValue { get; set; }
       WeaponType Dagger(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
       WeaponType Javelin(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
+      AttackType JavelinChainmailDto();
+      AttackType JavelinClothDto();
+      AttackType JavelinLeatherDto();
+      AttackType JavelinPlateDto();
       WeaponType OneHandedAxe(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
       WeaponType OneHandedMace(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
       WeaponType OneHandedPolearm(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);

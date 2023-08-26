@@ -4,18 +4,6 @@ namespace TheBestCombatMod.Concept
 {
    public interface WeaponType
    {
-      int ChainmailResistanceBonus();
-      int ChainmailSwingResistance();
-      int ChainmailThrustResistance();
-      int ClothResistanceBonus();
-      int ClothSwingResistance();
-      int ClothThrustResistance();
       int GetResistanceBonus(in string[] loadedOptions);
-      int LeatherResistanceBonus();
-      int LeatherSwingResistance();
-      int LeatherThrustResistance();
-      int PlateResistanceBonus();
-      int PlateSwingResistance();
-      int PlateThrustResistance();
    }
 }

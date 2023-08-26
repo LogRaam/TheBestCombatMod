@@ -64,8 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concept\ArmorResistance.cs" />
     <Compile Include="Concept\AttackerInfo.cs" />
     <Compile Include="Concept\AttackerOptions.cs" />
+    <Compile Include="Concept\AttackType.cs" />
     <Compile Include="Concept\BodyPart.cs" />
     <Compile Include="Concept\BodyParts.cs" />
     <Compile Include="Concept\BodyPartsVulnerabilityOptions.cs" />
@@ -89,6 +91,8 @@
     <Compile Include="Concept\OptionFileContent.cs" />
     <Compile Include="Concept\ValuesUpdater.cs" />
     <Compile Include="Features\Options\Options.cs" />
+    <Compile Include="Features\Unseat\Armor\AttackTypeDto.cs" />
+    <Compile Include="Features\Unseat\Armor\ArmorMaterialUnseatResistance.cs" />
     <Compile Include="Features\Unseat\Body\AbdomenUnseatProbability.cs" />
     <Compile Include="Features\Unseat\Body\ArmsUnseatProbability.cs" />
     <Compile Include="Features\Unseat\Body\ChestUnseatProbability.cs" />

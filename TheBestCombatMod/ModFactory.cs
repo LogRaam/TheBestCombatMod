@@ -12,6 +12,7 @@ using TheBestCombatMod.Features.KnockedDown;
 using TheBestCombatMod.Features.KnockedDown.Options;
 using TheBestCombatMod.Features.Options;
 using TheBestCombatMod.Features.Unseat;
+using TheBestCombatMod.Features.Unseat.Armor;
 using TheBestCombatMod.Features.Unseat.Body;
 using TheBestCombatMod.Features.Unseat.Options;
 using TheBestCombatMod.Features.Unseat.Weapon;
@@ -24,6 +25,7 @@ namespace TheBestCombatMod
    {
       private BodyPart _abdomen;
       private KnockedDownFeature _agentKnockedDownByBlow;
+      private ArmorResistance _armorMaterialUnseatResistance;
       private BodyPart _arms;
       private AttackerOptions _attackerOptions;
       private BodyPart _chest;
@@ -65,6 +67,12 @@ namespace TheBestCombatMod
       {
          get => _abdomen ??= new AbdomenUnseatProbability();
          set => _abdomen = value;
+      }
+
+      public ArmorResistance ArmorMaterialUnseatResistance
+      {
+         get => _armorMaterialUnseatResistance ??= new ArmorMaterialUnseatResistance(LoadedOptions);
+         set => _armorMaterialUnseatResistance = value;
       }
 
       public BodyPart ArmsUnseatProbability
@@ -344,6 +352,59 @@ namespace TheBestCombatMod
 
       public WeaponType Dagger(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Dagger(in strikeType, in damageType, in materialType);
       public WeaponType Javelin(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Javelin(LoadedOptions, in strikeType, in damageType, in materialType);
+
+      public AttackType JavelinChainmailDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_CHAINMAIL_pA3vR_Value,
+            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_CHAINMAIL_nB7eU_Value,
+            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_CHAINMAIL_zD5tL_Value,
+            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_CHAINMAIL_xF9cV_Value
+         };
+
+         return result;
+      }
+
+      public AttackType JavelinClothDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_CLOTH_tA1vZ_Value,
+            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_CLOTH_rN5uX_Value,
+            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_CLOTH_kY3gW_Value,
+            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_CLOTH_mC9dH_Value
+         };
+
+         return result;
+      }
+
+      public AttackType JavelinLeatherDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_LEATHER_yM4aI_Value,
+            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_LEATHER_iK6xO_Value,
+            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_LEATHER_sU7nJ_Value,
+            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_LEATHER_pE8bQ_Value
+         };
+
+         return result;
+      }
+
+      public AttackType JavelinPlateDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_PLATE_tZ7uO_Value,
+            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_PLATE_rC4dP_Value,
+            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_PLATE_mY8bF_Value,
+            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_PLATE_oX1wM_Value
+         };
+
+         return result;
+      }
+
       public WeaponType OneHandedAxe(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedAxe(in strikeType, in damageType, in materialType);
       public WeaponType OneHandedMace(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedMace(in strikeType, in damageType, in materialType);
       public WeaponType OneHandedPolearm(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedPolearm(in strikeType, in damageType, in materialType);
