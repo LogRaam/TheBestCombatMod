@@ -3,12 +3,9 @@
 #region
 
 using HarmonyLib;
-using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TheBestCombatMod.Features.Options;
-using TheBestCombatMod.Features.Unseat.Options;
 
 #endregion
 
@@ -29,7 +26,7 @@ namespace TheBestCombatMod.Features.Unseat
       {
          if (UnseatDisqualified(attackerAgent, victimAgent, attackerWeapon, blow)) return true;
 
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
          var loggerActivated = option.IsOptionActivated(Runtime.LoadedOptions.GetContent(), option.GolbalActivationValues.ShowInformationMessagesInGameLogger_Active);
 
          if (victimAgent.WieldedOffhandWeapon.Item != null)
@@ -45,7 +42,7 @@ namespace TheBestCombatMod.Features.Unseat
 
          var unseatChances = Runtime.DecideAgentDismountedByBlow.CalculateStaggerChance(Runtime.LoadedOptions.GetContent(), attackerAgent, victimAgent, blow, attackerWeapon, collisionData);
 
-         if (new MBFastRandom().Next(1, 100) <= unseatChances)
+         if (Runtime.Get.Random.Next(1, 100) <= unseatChances)
          {
             __result = true;
 

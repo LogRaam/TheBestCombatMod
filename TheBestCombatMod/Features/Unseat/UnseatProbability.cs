@@ -3,11 +3,9 @@
 #region
 
 using System;
-using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TheBestCombatMod.Concept;
-using TheBestCombatMod.Features.Options;
 using TheBestCombatMod.Features.Unseat.Options;
 
 #endregion
@@ -18,8 +16,7 @@ namespace TheBestCombatMod.Features.Unseat
    {
       public int ForInertiaStrength(in string[] loadedOptions, float inertia, bool attackerHasMount, float movementSpeedDamageModifier)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
-
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceTakingAccountAttackerWeaponInertia_Active)) return 0;
 
@@ -35,23 +32,23 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int ForStrikeAgainstArmor(in string[] loadedOptions, ArmorComponent.ArmorMaterialTypes armorMaterialType, WeaponClass attackerWeaponClass, StrikeType strikeType, DamageTypes blowDamageType)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceForStrikeAgainstArmor_Active)) return 0;
 
-         var bonus = new ProtectionInfo().GetResistanceBonusFrom(loadedOptions, attackerWeaponClass, strikeType, blowDamageType, armorMaterialType);
+         var bonus = Runtime.Get.ProtectionInfo.GetResistanceBonusFrom(loadedOptions, attackerWeaponClass, strikeType, blowDamageType, armorMaterialType);
 
          return bonus;
       }
 
       public int ForTargetedBodyPart(in string[] loadedOptions, in BoneBodyPartType blowVictimBodyPart)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceForTargetedBodyPart_Active)) return 0;
 
 
-         var stagger = new UnseatBodyPartsVulnerabilityOptions(loadedOptions);
+         var stagger = Runtime.Get.UnseatBodyPartsVulnerabilityOptions;
 
          if (blowVictimBodyPart == BoneBodyPartType.None) return UnseatBodyPartsVulnerabilityOptions.Unknown;
          if (blowVictimBodyPart == BoneBodyPartType.Head) return stagger.Head;
@@ -67,7 +64,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int ForTypeOfDamageOnBodyPart(in string[] loadedOptions, StrikeType strike, DamageTypes typeOfDamage, BoneBodyPartType bodyPart)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(new UnseatStaggerStrengthOptionValues(loadedOptions)), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.StrikeEffectOnBodyPart_Active)) return 0;
 
@@ -171,7 +168,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public float IfAttackerIsWoman(in string[] loadedOptions, in bool attackerAgentIsFemale)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceWhenAttackerIsAWoman_Active)) return 1;
 
@@ -182,7 +179,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int WhenAttackerIsHealthier(in string[] loadedOptions, float victimHealth, float victimMaxHealth, float attackerHealth, float attackerMaxHealth)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceWhenAttackerIsHealthier_Active)) return 0;
          if (Math.Abs(victimHealth - attackerHealth) < 0.0001) return 0;
@@ -201,7 +198,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int WhenAttackerIsHeavier(in string[] loadedOptions, float victimWeight, float attackerWeight)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceWhenAttackerIsHeavier_Active)) return 0;
          if (victimWeight == 0) return 0;
@@ -220,7 +217,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int WhenAttackerIsNotTrained(in string[] loadedOptions, bool isSoldierOrHero)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ReduceProbabilityForPeasants)) return 0;
 
@@ -233,7 +230,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int WhenAttackerIsStronger(in string[] loadedOptions, float victimBuild, float attackerBuild)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceWhenAttackerIsStronger_Active)) return 0;
 
@@ -252,7 +249,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int WhenBlowIsCritical(in string[] loadedOptions, in Blow blow, in int victimMaxHitPoints)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceWhenBlowIsCritical_Active)) return 0;
 
@@ -273,7 +270,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int WhenThrustTipHit(in string[] loadedOptions, bool thrustTipHit)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceWhenThrustTipHit_Active)) return 0;
 
@@ -284,7 +281,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       public int WhenVictimeDidNotRaiseHisGuard(in string[] loadedOptions, in Agent.GuardMode victimCurrentGuardStance)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.ImpactDismountChanceWhenVictimDidNotRaiseHisGuard_Active)) return 0;
 
@@ -297,7 +294,7 @@ namespace TheBestCombatMod.Features.Unseat
 
       private int ApplyMountModifier(in string[] loadedOptions, bool attackerHasMount, int divisor)
       {
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.IncreasesInertiaGivenStrikeOnHorseback_Active)) return 0;
 

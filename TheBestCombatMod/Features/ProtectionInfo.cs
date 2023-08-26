@@ -5,7 +5,6 @@
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TheBestCombatMod.Concept;
-using TheBestCombatMod.Features.Unseat.Weapon;
 
 #endregion
 
@@ -29,18 +28,18 @@ namespace TheBestCombatMod.Features
          switch (weaponClass)
          {
             case WeaponClass.Undefined: return 0;
-            case WeaponClass.Dagger: return new Dagger(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.OneHandedSword: return new OneHandedSword(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.TwoHandedSword: return new TwoHandedSword(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.OneHandedAxe: return new OneHandedAxe(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.TwoHandedAxe: return new TwoHandedAxe(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.Mace: return new OneHandedMace(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.Pick: return new Pick(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.TwoHandedMace: return new TwoHandedMace(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.OneHandedPolearm: return new OneHandedPolearm(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.TwoHandedPolearm: return new TwoHandedPolearm(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.Stone: return new Stone(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
-            case WeaponClass.Javelin: return new Javelin(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.Dagger: return Runtime.Get.Dagger(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.OneHandedSword: return Runtime.Get.OneHandedSword(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.TwoHandedSword: return Runtime.Get.TwoHandedSword(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.OneHandedAxe: return Runtime.Get.OneHandedAxe(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.TwoHandedAxe: return Runtime.Get.TwoHandedAxe(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.Mace: return Runtime.Get.OneHandedMace(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.Pick: return Runtime.Get.Pick(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.TwoHandedMace: return Runtime.Get.TwoHandedMace(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.OneHandedPolearm: return Runtime.Get.OneHandedPolearm(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.TwoHandedPolearm: return Runtime.Get.TwoHandedPolearm(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.Stone: return Runtime.Get.Stone(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
+            case WeaponClass.Javelin: return Runtime.Get.Javelin(strikeType, damageType, materialType).GetResistanceBonus(loadedOptions);
 
             default:
                return 0;

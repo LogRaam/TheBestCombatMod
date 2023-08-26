@@ -43,8 +43,8 @@ namespace TheBestCombatMod.Features.KnockedDown.Options
       {
          if (loadedOptions.Length == 0) return;
 
-         var loader = Runtime.Get.ConfigurationLoader; //  new ConfigLoader();
-         var option = Runtime.Get.KnockedDownByBlowConfiguration; //new KnockedDownByBlowConfiguration(new DefaultOptionReader(), new KnockedDownActivationRefTag(), new KnockedDownRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var loader = Runtime.Get.ConfigurationLoader;
+         var option = Runtime.Get.KnockedDownByBlowConfiguration;
 
          Formidable = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_FORMIDABLE_y34fA_Value);
          Low = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_LOW_Sld4t_Value);

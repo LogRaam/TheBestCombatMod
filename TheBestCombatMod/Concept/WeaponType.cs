@@ -2,7 +2,7 @@
 
 namespace TheBestCombatMod.Concept
 {
-   internal interface WeaponType
+   public interface WeaponType
    {
       int GetResistanceBonus(in string[] loadedOptions);
    }

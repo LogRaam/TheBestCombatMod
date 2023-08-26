@@ -52,7 +52,7 @@ namespace TheBestCombatMod
 
       private static void ClearAllInstances()
       {
-         LoadedOptions = null;
+         //LoadedOptions = null;
          StaggerStrength = null;
          UnseatImpactResistance = null;
          UnseatBodyPartsVulnerabilityOptions = null;
@@ -76,7 +76,7 @@ namespace TheBestCombatMod
          StaggerStrength = Get.UnseatStaggerStrengthOptions;
          UnseatImpactResistance = Get.UnseatResistanceOptions;
          UnseatBodyPartsVulnerabilityOptions = Get.UnseatBodyPartsVulnerabilityOptions;
-         ImpactUnseatChanceValue = Get.ImpactUnseatChanceOptions;
+         if (LoadedOptions.GetContent().Length > 0) ImpactUnseatChanceValue = Get.ImpactUnseatChanceOptions;
          DefenseInfo = Get.DefenseInfo;
          AttackerOptions = Get.AttackerOptions;
          FileInteraction = Get.FileInteraction;
