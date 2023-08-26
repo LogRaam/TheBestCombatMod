@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 01/08/2023.
+﻿// Code written by Gabriel Mailhot, 24/08/2023.
 
 #region
 
@@ -17,7 +17,7 @@ namespace TheBestCombatMod
       protected override void OnGameStart(Game game, IGameStarter gameStarter)
       {
          var starter = (CampaignGameStarter) gameStarter;
-         starter.AddBehavior(new ConfigurationBehavior());
+         starter.AddBehavior((CampaignBehaviorBase) Runtime.Get.ConfigurationBehavior);
       }
 
       protected override void OnSubModuleLoad()

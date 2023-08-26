@@ -5,7 +5,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using TheBestCombatMod;
-using TheBestCombatMod.Features.Unseat.Values;
+using TheBestCombatMod.Features.Unseat.Options;
 
 #endregion
 
@@ -17,8 +17,7 @@ namespace TheBestCombatModTest
       [SetUp]
       public void Setup()
       {
-         var loader = new ConfigLoaderSubstitute();
-         Runtime.Update(loader);
+         //TODO: FactorySubstitute
       }
 
       [Test]
@@ -29,7 +28,7 @@ namespace TheBestCombatModTest
          var expectedResult = 6;
 
          //When
-         var actualResult = sut.NECK_CUT_SWINGING_OJ42D;
+         var actualResult = sut.NECK_CUT_SWINGING();
 
          //Then
          actualResult.Should().Be(expectedResult);

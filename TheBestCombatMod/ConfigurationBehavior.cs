@@ -30,11 +30,11 @@ namespace TheBestCombatMod
       private static void UpdateValues()
       {
          var loadedOptions = Runtime.LoadedOptions.GetContent();
-         Runtime.Resistance.Update(loadedOptions);
          Runtime.StaggerStrength.Update(loadedOptions);
-         Runtime.BodyPartUnseatStaggerValue.Update(loadedOptions);
+         Runtime.UnseatImpactResistance.Update(loadedOptions);
+         Runtime.UnseatBodyPartsVulnerabilityOptions.Update(loadedOptions);
          Runtime.ImpactUnseatChanceValue.Update(loadedOptions);
-         Runtime.UnseatContextualAdditionalValue.Update(loadedOptions);
+         Runtime.AttackerOptions.Update(loadedOptions);
          Runtime.WeaponStaggerForceValue.Update(loadedOptions);
          Runtime.KnockDownStrenghtValue.Update(loadedOptions);
       }

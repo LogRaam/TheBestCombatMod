@@ -1,15 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 12/08/2023.
+﻿// Code written by Gabriel Mailhot, 24/08/2023.
 
 #region
 
 using LogRaamConfiguration;
-using TheBestCombatMod.Common;
-using TheBestCombatMod.Factories;
-using TheBestCombatMod.Features.Knocked;
-using TheBestCombatMod.Features.Knocked.Values;
-using TheBestCombatMod.Features.Unseat;
-using TheBestCombatMod.Features.Unseat.Values;
-using TheBestCombatMod.GeneralOptions;
+using TheBestCombatMod.Concept;
 
 #endregion
 
@@ -19,65 +13,81 @@ namespace TheBestCombatMod
    {
       static Runtime()
       {
-         Get = new TBCMFactory();
-
-         Loader = Get.ConfigurationLoader();
-         LoadedOptions = Get.OptionFileContent();
-
-         StaggerStrength = new StaggerStrengthValue(LoadedOptions.GetContent());
-         Resistance = new ResistanceValue(LoadedOptions.GetContent());
-
-         BodyPartUnseatStaggerValue = new BodyPartUnseatStaggerValue(LoadedOptions.GetContent());
-         ImpactUnseatChanceValue = new ImpactUnseatChanceValue(LoadedOptions.GetContent());
-
-         ArmorCharacteristics = new ArmorCharacteristics();
-         UnseatContextualAdditionalValue = new UnseatContextualAdditionalValue(LoadedOptions.GetContent());
-         DecideAgentDismountedByBlow = new DecideAgentUnseatByBlowFeature();
-         FileInteraction = new FileInteraction(Loader.GetOptionFilePath());
-         ImpactDismountChance = new UnseatProbability();
-         UnseatOptions = new UnseatByBlowOptions(new OptionBase(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new ActivationRefTag(), new ValueRefTag());
-         WeaponStaggerForceValue = new WeaponStaggerForceValue(LoadedOptions.GetContent());
-         DecideAgentKnockedDownByBlow = new DecideAgentKnockedDownByBlowFeature();
-         KnockDownStrenghtValue = new KnockDownStrenghtValue(LoadedOptions.GetContent());
+         Get = new ModFactory();
+         Init();
       }
 
-      public static ArmorCharacteristics ArmorCharacteristics { get; private set; }
-      public static BodyPartUnseatStaggerValue BodyPartUnseatStaggerValue { get; private set; }
-      public static DecideAgentUnseatByBlowFeature DecideAgentDismountedByBlow { get; private set; }
-      public static DecideAgentKnockedDownByBlowFeature DecideAgentKnockedDownByBlow { get; private set; }
-      public static FileInteraction FileInteraction { get; set; }
+      public static AttackerOptions AttackerOptions { get; private set; }
+      public static UnseatFeature DecideAgentDismountedByBlow { get; private set; }
+      public static KnockedDownFeature DecideAgentKnockedDownByBlowKnockedDown { get; private set; }
+      public static SituationalDefenseInfo DefenseInfo { get; private set; }
+      public static FileTimeStamp FileInteraction { get; set; }
+      public static Factory Get { get; set; }
+      public static CombatActionEffect ImpactDismountChance { get; private set; }
+      public static ImpactChanceOptions ImpactUnseatChanceValue { get; private set; }
+      public static KnockDownStrengthOption KnockDownStrenghtValue { get; set; }
+      public static OptionFileContent LoadedOptions { get; set; }
+      public static ConfigurationLoader Loader { get; set; }
+      public static StaggerStrengthOptions StaggerStrength { get; set; }
+      public static BodyPartsVulnerabilityOptions UnseatBodyPartsVulnerabilityOptions { get; private set; }
+      public static ImpactResistanceOptions UnseatImpactResistance { get; private set; }
+      public static OptionReader UnseatOptionsReader { get; private set; }
+      public static WeaponStaggerForce WeaponStaggerForceValue { get; private set; }
 
-      public static ITBCMFactory Get { get; }
-      public static UnseatProbability ImpactDismountChance { get; private set; }
-      public static ImpactUnseatChanceValue ImpactUnseatChanceValue { get; private set; }
-      public static KnockDownStrenghtValue KnockDownStrenghtValue { get; set; }
-      public static IOptionFileContent LoadedOptions { get; set; }
-      public static IConfigurationLoader Loader { get; set; }
-      public static ResistanceValue Resistance { get; private set; }
-      public static StaggerStrengthValue StaggerStrength { get; set; }
-      public static UnseatContextualAdditionalValue UnseatContextualAdditionalValue { get; private set; }
-      public static UnseatByBlowOptions UnseatOptions { get; private set; }
-      public static WeaponStaggerForceValue WeaponStaggerForceValue { get; private set; }
 
-      public static void Update(IConfigurationLoader loader)
+      public static void Update(ConfigurationLoader loader)
       {
          Loader = loader;
-         LoadedOptions = new OptionFileContent(Loader);
-
-         StaggerStrength = new StaggerStrengthValue(LoadedOptions.GetContent());
-         Resistance = new ResistanceValue(LoadedOptions.GetContent());
-
-         BodyPartUnseatStaggerValue = new BodyPartUnseatStaggerValue(LoadedOptions.GetContent());
-         ImpactUnseatChanceValue = new ImpactUnseatChanceValue(LoadedOptions.GetContent());
-
-         UnseatContextualAdditionalValue = new UnseatContextualAdditionalValue(LoadedOptions.GetContent());
-         DecideAgentDismountedByBlow = new DecideAgentUnseatByBlowFeature();
-         FileInteraction = new FileInteraction(Loader.GetOptionFilePath());
-         ImpactDismountChance = new UnseatProbability();
-         UnseatOptions = new UnseatByBlowOptions(new OptionBase(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new ActivationRefTag(), new ValueRefTag());
-         WeaponStaggerForceValue = new WeaponStaggerForceValue(LoadedOptions.GetContent());
-         DecideAgentKnockedDownByBlow = new DecideAgentKnockedDownByBlowFeature();
-         KnockDownStrenghtValue = new KnockDownStrenghtValue(LoadedOptions.GetContent());
+         LoadedOptions = Get.OptionFileContent(loader);
+         Init();
       }
+
+
+      public static void Update(Factory factory)
+      {
+         Get = factory;
+      }
+
+      #region private
+
+      private static void ClearAllInstances()
+      {
+         LoadedOptions = null;
+         StaggerStrength = null;
+         UnseatImpactResistance = null;
+         UnseatBodyPartsVulnerabilityOptions = null;
+         ImpactUnseatChanceValue = null;
+         DefenseInfo = null;
+         AttackerOptions = null;
+         FileInteraction = null;
+         ImpactDismountChance = null;
+         UnseatOptionsReader = null;
+         WeaponStaggerForceValue = null;
+         DecideAgentKnockedDownByBlowKnockedDown = null;
+         KnockDownStrenghtValue = null;
+         DecideAgentDismountedByBlow = null;
+      }
+
+      private static void Init()
+      {
+         ClearAllInstances();
+         Loader = Get.ConfigurationLoader;
+         LoadedOptions = Get.Options;
+         StaggerStrength = Get.UnseatStaggerStrengthOptions;
+         UnseatImpactResistance = Get.UnseatResistanceOptions;
+         UnseatBodyPartsVulnerabilityOptions = Get.UnseatBodyPartsVulnerabilityOptions;
+         ImpactUnseatChanceValue = Get.ImpactUnseatChanceOptions;
+         DefenseInfo = Get.DefenseInfo;
+         AttackerOptions = Get.AttackerOptions;
+         FileInteraction = Get.FileInteraction;
+         ImpactDismountChance = Get.CombatActionEffect;
+         UnseatOptionsReader = Get.UnseatOptionReader;
+         WeaponStaggerForceValue = Get.WeaponStaggerForceValue;
+         DecideAgentKnockedDownByBlowKnockedDown = Get.DecideAgentKnockedDownByBlow;
+         KnockDownStrenghtValue = Get.KnockDownStrengthOption;
+         DecideAgentDismountedByBlow = Get.DecideAgentDismountedByBlow;
+      }
+
+      #endregion
    }
 }

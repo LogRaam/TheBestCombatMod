@@ -1,17 +1,15 @@
-﻿// Code written by Gabriel Mailhot, 10/08/2023.
+﻿// Code written by Gabriel Mailhot, 24/08/2023.
 
 #region
 
-using LogRaamConfiguration;
 using TaleWorlds.Core;
-using TheBestCombatMod.Features.Unseat.Values;
-using TheBestCombatMod.GeneralOptions;
+using TheBestCombatMod.Concept;
 
 #endregion
 
 namespace TheBestCombatMod.Features.Unseat.Weapon
 {
-   internal class Stone : IWeaponType
+   internal class Stone : WeaponType
    {
       public readonly DamageTypes DamageType;
       public readonly StrikeType StrikeType;
@@ -31,7 +29,7 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
       {
          var weaponForce = Runtime.WeaponStaggerForceValue.Stone;
 
-         var option = new UnseatByBlowOptions(new OptionBase(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new ActivationRefTag(), new ValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
 
          if (MaterialType == ArmorComponent.ArmorMaterialTypes.None)
@@ -44,14 +42,14 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
          {
             if (StrikeType == StrikeType.Swing)
             {
-               if (DamageType == DamageTypes.Cut) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_CUT_AGAINST_CLOTH_jN5uG_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_BLUNT_AGAINST_CLOTH_kE9xR_Value);
+               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_CUT_AGAINST_CLOTH_jN5uG_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_BLUNT_AGAINST_CLOTH_kE9xR_Value);
             }
 
             if (StrikeType == StrikeType.Thrust)
             {
-               if (DamageType == DamageTypes.Pierce) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_PIERCE_AGAINST_CLOTH_fG4zW_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_BLUNT_AGAINST_CLOTH_zC8xI_Value);
+               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_PIERCE_AGAINST_CLOTH_fG4zW_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_BLUNT_AGAINST_CLOTH_zC8xI_Value);
             }
          }
 
@@ -59,14 +57,14 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
          {
             if (StrikeType == StrikeType.Swing)
             {
-               if (DamageType == DamageTypes.Cut) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_CUT_AGAINST_LEATHER_pC3xV_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_BLUNT_AGAINST_LEATHER_uN9gS_Value);
+               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_CUT_AGAINST_LEATHER_pC3xV_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_BLUNT_AGAINST_LEATHER_uN9gS_Value);
             }
 
             if (StrikeType == StrikeType.Thrust)
             {
-               if (DamageType == DamageTypes.Pierce) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_PIERCE_AGAINST_LEATHER_qH4zP_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_BLUNT_AGAINST_LEATHER_rY8nA_Value);
+               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_PIERCE_AGAINST_LEATHER_qH4zP_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_BLUNT_AGAINST_LEATHER_rY8nA_Value);
             }
          }
 
@@ -74,14 +72,14 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
          {
             if (StrikeType == StrikeType.Swing)
             {
-               if (DamageType == DamageTypes.Cut) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_CUT_AGAINST_CHAINMAIL_aU9gR_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_BLUNT_AGAINST_CHAINMAIL_bQ5zE_Value);
+               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_CUT_AGAINST_CHAINMAIL_aU9gR_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_BLUNT_AGAINST_CHAINMAIL_bQ5zE_Value);
             }
 
             if (StrikeType == StrikeType.Thrust)
             {
-               if (DamageType == DamageTypes.Pierce) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_PIERCE_AGAINST_CHAINMAIL_dE7rQ_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_BLUNT_AGAINST_CHAINMAIL_fM4zG_Value);
+               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_PIERCE_AGAINST_CHAINMAIL_dE7rQ_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_BLUNT_AGAINST_CHAINMAIL_fM4zG_Value);
             }
          }
 
@@ -89,14 +87,14 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
          {
             if (StrikeType == StrikeType.Swing)
             {
-               if (DamageType == DamageTypes.Cut) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_CUT_AGAINST_PLATE_zC8xG_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_SWING_BLUNT_AGAINST_PLATE_kN4zI_Value);
+               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_CUT_AGAINST_PLATE_zC8xG_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_SWING_BLUNT_AGAINST_PLATE_kN4zI_Value);
             }
 
             if (StrikeType == StrikeType.Thrust)
             {
-               if (DamageType == DamageTypes.Pierce) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_PIERCE_AGAINST_PLATE_tH7xQ_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.Resistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValueTags.STONE_THRUST_BLUNT_AGAINST_PLATE_nY3hA_Value);
+               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_PIERCE_AGAINST_PLATE_tH7xQ_Value);
+               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.STONE_THRUST_BLUNT_AGAINST_PLATE_nY3hA_Value);
             }
          }
 

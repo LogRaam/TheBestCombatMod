@@ -1,0 +1,50 @@
+﻿// Code written by Gabriel Mailhot, 24/08/2023.
+
+namespace TheBestCombatMod.Concept
+{
+   public interface ImpactStaggerEffect
+   {
+      int ABDOMEN_BLUNT_SWINGING();
+      int ABDOMEN_BLUNT_THRUSTING();
+      int ABDOMEN_CUT_SWINGING();
+      int ABDOMEN_CUT_THRUSTING();
+      int ABDOMEN_PIERCE_SWINGING();
+      int ABDOMEN_PIERCE_THRUSTING();
+      int ARMS_BLUNT_SWINGING();
+      int ARMS_BLUNT_THRUSTING();
+      int ARMS_CUT_SWINGING();
+      int ARMS_CUT_THRUSTING();
+      int ARMS_PIERCE_SWINGING();
+      int ARMS_PIERCE_THRUSTING();
+      int CHEST_BLUNT_SWINGING();
+      int CHEST_BLUNT_THRUSTING();
+      int CHEST_CUT_SWINGING();
+      int CHEST_CUT_THRUSTING();
+      int CHEST_PIERCE_SWINGING();
+      int CHEST_PIERCE_THRUSTING();
+      int HEAD_BLUNT_SWINGING();
+      int HEAD_BLUNT_THRUSTING();
+      int HEAD_CUT_SWINGING();
+      int HEAD_CUT_THRUSTING();
+      int HEAD_PIERCE_SWINGING();
+      int HEAD_PIERCE_THRUSTING();
+      int LEGS_BLUNT_SWINGING();
+      int LEGS_BLUNT_THRUSTING();
+      int LEGS_CUT_SWINGING();
+      int LEGS_CUT_THRUSTING();
+      int LEGS_PIERCE_SWINGING();
+      int LEGS_PIERCE_THRUSTING();
+      int NECK_BLUNT_SWINGING();
+      int NECK_BLUNT_THRUSTING();
+      int NECK_CUT_SWINGING();
+      int NECK_CUT_THRUSTING();
+      int NECK_PIERCE_SWINGING();
+      int NECK_PIERCE_THRUSTING();
+      int SHOULDERS_BLUNT_SWINGING();
+      int SHOULDERS_BLUNT_THRUSTING();
+      int SHOULDERS_CUT_SWINGING();
+      int SHOULDERS_CUT_THRUSTING();
+      int SHOULDERS_PIERCE_SWINGING();
+      int SHOULDERS_PIERCE_THRUSTING();
+   }
+}

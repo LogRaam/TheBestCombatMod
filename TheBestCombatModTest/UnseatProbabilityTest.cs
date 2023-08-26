@@ -7,10 +7,11 @@ using LogRaamConfiguration;
 using NUnit.Framework;
 using TaleWorlds.Core;
 using TheBestCombatMod;
-using TheBestCombatMod.Common;
+using TheBestCombatMod.Features;
+using TheBestCombatMod.Features.Options;
 using TheBestCombatMod.Features.Unseat;
-using TheBestCombatMod.Features.Unseat.Values;
-using TheBestCombatMod.GeneralOptions;
+using TheBestCombatMod.Features.Unseat.Options;
+using TheBestCombatModTest.Substitutes;
 
 #endregion
 
@@ -37,20 +38,21 @@ namespace TheBestCombatModTest
       public void GetBonusFrom_Test()
       {
          //Given
-         var sut = new ArmorCharacteristics();
+         var sut = new ProtectionInfo();
          var expectedResult = 34;
-         var option = new UnseatByBlowOptions(new OptionBase(new ResistanceValue(Runtime.LoadedOptions.GetContent())), new UnseatActivationRefTag(), new UnseatValueRefTag(), new ActivationRefTag(), new ValueRefTag());
+         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(new UnseatImpactResistanceValue(Runtime.LoadedOptions.GetContent())), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var loadedOptions = Runtime.LoadedOptions.GetContent();
 
          //When
          var actualResult = sut.GetResistanceBonusFrom(
-            Runtime.LoadedOptions.GetContent(),
+            loadedOptions,
             WeaponClass.Dagger,
             StrikeType.Swing,
             DamageTypes.Blunt,
             ArmorComponent.ArmorMaterialTypes.Plate);
 
-         var test2 = option.GetAlphaValueFor(Runtime.LoadedOptions.GetContent(), option.UnseatValueTags.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_CLOTH_dH8xR_Value);
-         var test3 = option.GetAlphaValueFor(Runtime.LoadedOptions.GetContent(), option.UnseatValueTags.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_PLATE_lH8xR_Value);
+         var test2 = option.GetAlphaValueFor(Runtime.LoadedOptions.GetContent(), option.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_CLOTH_dH8xR_Value);
+         var test3 = option.GetAlphaValueFor(Runtime.LoadedOptions.GetContent(), option.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_PLATE_lH8xR_Value);
 
          //Then
          test2.Should().Be(60);

@@ -6,7 +6,8 @@ using FluentAssertions;
 using LogRaamConfiguration;
 using NUnit.Framework;
 using TheBestCombatMod;
-using TheBestCombatMod.GeneralOptions;
+using TheBestCombatMod.Features.Options;
+using TheBestCombatModTest.Substitutes;
 
 #endregion
 
@@ -22,21 +23,21 @@ namespace TheBestCombatModTest
          //Arrange
          var loader = new ConfigLoaderSubstitute();
          Runtime.Loader = loader;
-         Runtime.LoadedOptions = new OptionFileContent(loader);
+         Runtime.LoadedOptions = new Options(loader);
          Runtime.FileInteraction = new FileInteraction(loader.GetOptionFilePath());
 
          //Assert
          Runtime.LoadedOptions.Should().NotBeNull();
          Runtime.FileInteraction.Should().NotBeNull();
-         Runtime.BodyPartUnseatStaggerValue.Should().NotBeNull();
+         Runtime.UnseatBodyPartsVulnerabilityOptions.Should().NotBeNull();
          Runtime.ImpactUnseatChanceValue.Should().NotBeNull();
          Runtime.DecideAgentDismountedByBlow.Should().NotBeNull();
          Runtime.ImpactDismountChance.Should().NotBeNull();
-         Runtime.Resistance.Should().NotBeNull();
+         Runtime.UnseatImpactResistance.Should().NotBeNull();
          Runtime.StaggerStrength.Should().NotBeNull();
-         Runtime.UnseatContextualAdditionalValue.Should().NotBeNull();
+         Runtime.AttackerOptions.Should().NotBeNull();
          Runtime.Loader.Should().NotBeNull();
-         Runtime.UnseatOptions.Should().NotBeNull();
+         Runtime.UnseatOptionsReader.Should().NotBeNull();
       }
    }
 }

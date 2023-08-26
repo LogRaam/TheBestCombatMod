@@ -67,9 +67,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BodyPartUnseatStaggerValueTest.cs" />
-    <Compile Include="ConfigLoaderSubstitute.cs" />
-    <Compile Include="DecideAgentKnockedDownByBlowFeatureTest.cs" />
+    <Compile Include="UnseatBodyPartsVulnerabilityOptionsTest.cs" />
+    <Compile Include="Substitutes\ConfigLoaderSubstitute.cs" />
+    <Compile Include="DecideAgentKnockedDownByBlowKnockedDownFeatureTest.cs" />
     <Compile Include="DecideAgentUnseatByBlowFeatureTest.cs" />
     <Compile Include="ImpactUnseatChanceValueTest.cs" />
     <Compile Include="RuntimeTest.cs" />
@@ -80,8 +80,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\LogRaamConfiguration\LogRaamConfiguration.csproj">
-      <Project>{63c69457-654c-4346-8254-7f06fb5d983a}</Project>
+    <ProjectReference Include="..\..\LogRaamConfiguration\LogRaamConfiguration\LogRaamConfiguration.csproj">
+      <Project>{63C69457-654C-4346-8254-7F06FB5D983A}</Project>
       <Name>LogRaamConfiguration</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheBestCombatMod\TheBestCombatMod.csproj">
@@ -89,6 +89,7 @@
       <Name>TheBestCombatMod</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

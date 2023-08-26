@@ -1,19 +1,16 @@
-﻿// Code written by Gabriel Mailhot, 10/08/2023.
+﻿// Code written by Gabriel Mailhot, 24/08/2023.
 
 #region
 
-using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-using TheBestCombatMod.Common;
-using TheBestCombatMod.Features.Unseat.Values;
-using TheBestCombatMod.GeneralOptions;
+using TheBestCombatMod.Concept;
 
 #endregion
 
 namespace TheBestCombatMod.Features.Unseat
 {
-   public class DecideAgentUnseatByBlowFeature
+   public class DecideAgentUnseatByBlowFeature : UnseatFeature
    {
       public int CalculateStaggerChance(
          in string[] loadedOptions,
@@ -24,16 +21,16 @@ namespace TheBestCombatMod.Features.Unseat
          AttackCollisionData collision
       )
       {
-         var option = new UnseatByBlowOptions(new OptionBase(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new ActivationRefTag(), new ValueRefTag());
+         var option = Runtime.Get.UnseatOptionReader;
 
-         if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationTag.DismountedByBlow_Active)) return 0;
+         if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.DismountedByBlow_Active)) return 0;
 
          if (attackerAgent == null) return 0;
          if (victimAgent == null) return 0;
          if (attackerWeapon == null) return 0;
 
 
-         var globalProbability = new ArmorCharacteristics();
+         var globalProbability = Runtime.Get.ProtectionInfo;
          var armorMaterialType = globalProbability.GetArmorMaterialType(victimAgent, blow);
 
 
@@ -62,28 +59,30 @@ namespace TheBestCombatMod.Features.Unseat
          return (int) result;
       }
 
-      public float DoMath(in string[] loadedOptions,
-                          float attackerWeight,
-                          float attackerHealth,
-                          float attackerMaxHealth,
-                          float attackerBuild,
-                          bool attackerIsFemale,
-                          float victimWeight,
-                          float victimHealth,
-                          float victimBuild,
-                          Agent.GuardMode victimGuardMode,
-                          int victimMaxHealth,
-                          Blow blow,
-                          WeaponClass weaponClass,
-                          float inertia,
-                          bool thrustTipHit,
-                          ArmorComponent.ArmorMaterialTypes armorMaterialType,
-                          bool attackerIsSoldierOrHero,
-                          bool attackerHasMount,
-                          float movementSpeedDamageModifier
+      #region private
+
+      private float DoMath(in string[] loadedOptions,
+                           float attackerWeight,
+                           float attackerHealth,
+                           float attackerMaxHealth,
+                           float attackerBuild,
+                           bool attackerIsFemale,
+                           float victimWeight,
+                           float victimHealth,
+                           float victimBuild,
+                           Agent.GuardMode victimGuardMode,
+                           int victimMaxHealth,
+                           Blow blow,
+                           WeaponClass weaponClass,
+                           float inertia,
+                           bool thrustTipHit,
+                           ArmorComponent.ArmorMaterialTypes armorMaterialType,
+                           bool attackerIsSoldierOrHero,
+                           bool attackerHasMount,
+                           float movementSpeedDamageModifier
       )
       {
-         var unseatProbability = new UnseatProbability();
+         var unseatProbability = Runtime.Get.UnseatProbability;
 
          var armorResist = unseatProbability.ForStrikeAgainstArmor(loadedOptions, armorMaterialType, weaponClass, blow.StrikeType, blow.DamageType);
          var effectOnBody = unseatProbability.ForTypeOfDamageOnBodyPart(loadedOptions, blow.StrikeType, blow.DamageType, blow.VictimBodyPart);
@@ -114,5 +113,7 @@ namespace TheBestCombatMod.Features.Unseat
 
          return result;
       }
+
+      #endregion
    }
 }

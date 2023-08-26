@@ -8,7 +8,7 @@ using TaleWorlds.Library;
 
 namespace TheBestCombatMod
 {
-   internal class ScreenLogger
+   internal static class ScreenLogger
    {
       public static void LogMessage(string message, Color color)
       {

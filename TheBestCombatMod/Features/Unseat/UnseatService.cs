@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 12/08/2023.
+﻿// Code written by Gabriel Mailhot, 24/08/2023.
 
 #region
 
@@ -7,9 +7,8 @@ using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TheBestCombatMod.Common;
-using TheBestCombatMod.Features.Unseat.Values;
-using TheBestCombatMod.GeneralOptions;
+using TheBestCombatMod.Features.Options;
+using TheBestCombatMod.Features.Unseat.Options;
 
 #endregion
 
@@ -28,14 +27,14 @@ namespace TheBestCombatMod.Features.Unseat
                                  in Blow blow
       )
       {
-         if (Auditor.UnseatDisqualified(attackerAgent, victimAgent, attackerWeapon, blow)) return true;
+         if (UnseatDisqualified(attackerAgent, victimAgent, attackerWeapon, blow)) return true;
 
-         var option = new UnseatByBlowOptions(new OptionBase(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new ActivationRefTag(), new ValueRefTag());
-         var loggerActivated = option.IsOptionActivated(Runtime.LoadedOptions.GetContent(), option.GlobalActivationRefTag.ShowInformationMessagesInGameLogger_Active);
+         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var loggerActivated = option.IsOptionActivated(Runtime.LoadedOptions.GetContent(), option.GolbalActivationValues.ShowInformationMessagesInGameLogger_Active);
 
          if (victimAgent.WieldedOffhandWeapon.Item != null)
          {
-            if (Runtime.ArmorCharacteristics.IsShieldCovering(victimAgent.WieldedOffhandWeapon.Item.ItemCategory, blow.VictimBodyPart))
+            if (Runtime.DefenseInfo.IsShieldCovering(victimAgent.WieldedOffhandWeapon.Item.ItemCategory, blow.VictimBodyPart))
             {
                if (loggerActivated) ScreenLogger.LogMessage("Attack blocked by shield...", Color.White);
 
@@ -59,6 +58,28 @@ namespace TheBestCombatMod.Features.Unseat
          if (loggerActivated) ScreenLogger.LogMessage("Unseat chance " + unseatChances + "%: FAILED", Color.White);
 
          return true;
+      }
+
+      private static bool UnseatDisqualified(Agent attackerAgent, Agent victimAgent, WeaponComponentData attackerWeapon, Blow blow)
+      {
+         if (!victimAgent.IsHuman) return true;
+         if (attackerAgent.Team != null && victimAgent.Team != null)
+         {
+            if (attackerAgent.Team.Side == victimAgent.Team.Side) return true;
+         }
+
+         if (blow.IsMissile)
+         {
+            if (attackerWeapon.WeaponClass != WeaponClass.Stone && attackerWeapon.WeaponClass != WeaponClass.Javelin)
+            {
+               return true;
+            }
+         }
+
+         if (blow.IsFallDamage) return true;
+
+
+         return false;
       }
 
       #endregion
