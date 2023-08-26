@@ -2,6 +2,7 @@
 
 #region
 
+using System;
 using TaleWorlds.Core;
 using TheBestCombatMod.Concept;
 
@@ -25,6 +26,18 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
          DamageType = damageType;
          MaterialType = materialType;
       }
+
+      public int ChainmailResistanceBonus() => throw new NotImplementedException();
+
+      public int ChainmailSwingResistance() => throw new NotImplementedException();
+
+      public int ChainmailThrustResistance() => throw new NotImplementedException();
+
+      public int ClothResistanceBonus() => throw new NotImplementedException();
+
+      public int ClothSwingResistance() => throw new NotImplementedException();
+
+      public int ClothThrustResistance() => throw new NotImplementedException();
 
       public int GetResistanceBonus(in string[] loadedOptions)
       {
@@ -101,5 +114,17 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
 
          return weaponForce;
       }
+
+      public int LeatherResistanceBonus() => throw new NotImplementedException();
+
+      public int LeatherSwingResistance() => throw new NotImplementedException();
+
+      public int LeatherThrustResistance() => throw new NotImplementedException();
+
+      public int PlateResistanceBonus() => throw new NotImplementedException();
+
+      public int PlateSwingResistance() => throw new NotImplementedException();
+
+      public int PlateThrustResistance() => throw new NotImplementedException();
    }
 }
