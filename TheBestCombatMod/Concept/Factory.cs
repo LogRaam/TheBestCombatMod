@@ -13,7 +13,10 @@ namespace TheBestCombatMod.Concept
 {
    public interface Factory
    {
+      BodyPart AbdomenUnseatProbability { get; set; }
+      BodyPart ArmsUnseatProbability { get; set; }
       AttackerOptions AttackerOptions { get; set; }
+      BodyPart ChestUnseatProbability { get; set; }
       CombatActionEffect CombatActionEffect { get; set; }
       ICampaignBehavior ConfigurationBehavior { get; set; }
       ConfigurationLoader ConfigurationLoader { get; set; }
@@ -21,13 +24,17 @@ namespace TheBestCombatMod.Concept
       KnockedDownFeature DecideAgentKnockedDownByBlow { get; set; }
       SituationalDefenseInfo DefenseInfo { get; set; }
       FileTimeStamp FileInteraction { get; set; }
+      BodyPart HeadUnseatProbability { get; set; }
       ImpactChanceOptions ImpactUnseatChanceOptions { get; set; }
       KnockDownStrengthOption KnockDownStrengthOption { get; set; }
       KnockedDownByBlowConfiguration KnockedDownByBlowConfiguration { get; set; }
       KnockedDownProbability KnockedDownProbability { get; set; }
+      BodyPart LegsUnseatProbability { get; set; }
+      BodyPart NeckUnseatProbability { get; set; }
       OptionFileContent Options { get; set; }
       SituationalDefenseInfo ProtectionInfo { get; set; }
       MBFastRandom Random { get; set; }
+      BodyPart ShouldersUnseatProbability { get; set; }
       BodyPartsVulnerabilityOptions UnseatBodyPartsVulnerabilityOptions { get; set; }
       UnseatOptionReader UnseatOptionReader { get; set; }
       CombatActionEffect UnseatProbability { get; set; }

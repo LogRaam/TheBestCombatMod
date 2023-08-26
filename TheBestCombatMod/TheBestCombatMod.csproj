@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Concept\AttackerInfo.cs" />
     <Compile Include="Concept\AttackerOptions.cs" />
+    <Compile Include="Concept\BodyPart.cs" />
     <Compile Include="Concept\BodyParts.cs" />
     <Compile Include="Concept\BodyPartsVulnerabilityOptions.cs" />
     <Compile Include="Concept\CombatActionEffect.cs" />
@@ -88,6 +89,13 @@
     <Compile Include="Concept\OptionFileContent.cs" />
     <Compile Include="Concept\ValuesUpdater.cs" />
     <Compile Include="Features\Options\Options.cs" />
+    <Compile Include="Features\Unseat\Body\AbdomenUnseatProbability.cs" />
+    <Compile Include="Features\Unseat\Body\ArmsUnseatProbability.cs" />
+    <Compile Include="Features\Unseat\Body\ChestUnseatProbability.cs" />
+    <Compile Include="Features\Unseat\Body\HeadUnseatProbability.cs" />
+    <Compile Include="Features\Unseat\Body\LegsUnseatProbability.cs" />
+    <Compile Include="Features\Unseat\Body\NeckUnseatProbability.cs" />
+    <Compile Include="Features\Unseat\Body\ShouldersUnseatProbability.cs" />
     <Compile Include="Features\Unseat\Options\UnseatAttackerInfoValue.cs" />
     <Compile Include="Features\Unseat\Options\ImpactUnseatChanceValue.cs" />
     <Compile Include="Concept\StrengthLevels.cs" />
@@ -142,5 +150,6 @@
       <Name>LogRaamConfiguration</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

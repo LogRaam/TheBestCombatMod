@@ -67,99 +67,17 @@ namespace TheBestCombatMod.Features.Unseat
          var option = Runtime.Get.UnseatOptionReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.StrikeEffectOnBodyPart_Active)) return 0;
-
-
-         if (bodyPart == BoneBodyPartType.None || typeOfDamage == DamageTypes.Invalid || strike == StrikeType.Invalid)
-         {
-            return Runtime.StaggerStrength.None;
-         }
+         if (bodyPart == BoneBodyPartType.None || typeOfDamage == DamageTypes.Invalid || strike == StrikeType.Invalid) return Runtime.StaggerStrength.None;
 
          switch (bodyPart)
          {
-            case BoneBodyPartType.Head:
-               switch (typeOfDamage)
-               {
-                  case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.HEAD_CUT_SWINGING_05zN2_Value);
-                  case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.HEAD_CUT_THRUSTING_IgazM_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.HEAD_PIERCE_SWINGING_JMWpz_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.HEAD_PIERCE_THRUSTING_pMa5J_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.HEAD_BLUNT_SWINGING_8VPtS_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.HEAD_BLUNT_THRUSTING_UzQhf_Value);
-               }
-
-               break;
-            case BoneBodyPartType.Neck:
-               switch (typeOfDamage)
-               {
-                  case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.NECK_CUT_SWINGING_OJ42D_Value);
-                  case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.NECK_CUT_THRUSTING_JDsUb_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.NECK_PIERCE_SWINGING_16Tqb_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.NECK_PIERCE_THRUSTING_PwjyT_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.NECK_BLUNT_SWINGING_Z19yv_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.NECK_BLUNT_THRUSTING_yZEV1_Value);
-               }
-
-               break;
-            case BoneBodyPartType.Chest:
-               switch (typeOfDamage)
-               {
-                  case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.CHEST_CUT_SWINGING_sQmx7_Value);
-                  case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.CHEST_CUT_THRUSTING_dNomI_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.CHEST_PIERCE_SWINGING_6ssat_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.CHEST_PIERCE_THRUSTING_ybixm_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.CHEST_BLUNT_SWINGING_Ip0TE_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.CHEST_BLUNT_THRUSTING_ktCEu_Value);
-               }
-
-               break;
-            case BoneBodyPartType.Abdomen:
-               switch (typeOfDamage)
-               {
-                  case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ABDOMEN_CUT_SWINGING_tRqGA_Value);
-                  case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ABDOMEN_CUT_THRUSTING_eypTb_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ABDOMEN_PIERCE_SWINGING_VTO6S_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ABDOMEN_PIERCE_THRUSTING_suxMY_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ABDOMEN_BLUNT_SWINGING_v2v6T_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ABDOMEN_BLUNT_THRUSTING_6gLsx_Value);
-               }
-
-               break;
-            case BoneBodyPartType.ShoulderLeft or BoneBodyPartType.ShoulderRight:
-               switch (typeOfDamage)
-               {
-                  case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.SHOULDERS_CUT_SWINGING_8yoXK_Value);
-                  case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.SHOULDERS_CUT_THRUSTING_2Y1ez_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.SHOULDERS_PIERCE_SWINGING_HoWbh_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.SHOULDERS_PIERCE_THRUSTING_UhpJO_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.SHOULDERS_BLUNT_SWINGING_TplnH_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.SHOULDERS_BLUNT_THRUSTING_gqk9L_Value);
-               }
-
-               break;
-            case BoneBodyPartType.ArmLeft or BoneBodyPartType.ArmRight:
-               switch (typeOfDamage)
-               {
-                  case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_CUT_SWINGING_eMIfX_Value);
-                  case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_CUT_THRUSTING_uHDMI_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_PIERCE_SWINGING_ScPD3_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_PIERCE_THRUSTING_7R3oW_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_BLUNT_SWINGING_zwGj0_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_BLUNT_THRUSTING_E9s8D_Value);
-               }
-
-               break;
-            case BoneBodyPartType.Legs:
-               switch (typeOfDamage)
-               {
-                  case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.LEGS_CUT_SWINGING_xOKtK_Value);
-                  case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.LEGS_CUT_THRUSTING_hEsET_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.LEGS_PIERCE_SWINGING_6DD8t_Value);
-                  case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.LEGS_PIERCE_THRUSTING_NblKm_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.LEGS_BLUNT_SWINGING_JTLxV_Value);
-                  case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.LEGS_BLUNT_THRUSTING_awuSL_Value);
-               }
-
-               break;
+            case BoneBodyPartType.Head: return Runtime.Get.HeadUnseatProbability.WhenHit(loadedOptions, typeOfDamage, strike);
+            case BoneBodyPartType.Neck: return Runtime.Get.NeckUnseatProbability.WhenHit(loadedOptions, typeOfDamage, strike);
+            case BoneBodyPartType.Chest: return Runtime.Get.ChestUnseatProbability.WhenHit(loadedOptions, typeOfDamage, strike);
+            case BoneBodyPartType.Abdomen: return Runtime.Get.AbdomenUnseatProbability.WhenHit(loadedOptions, typeOfDamage, strike);
+            case BoneBodyPartType.ShoulderLeft or BoneBodyPartType.ShoulderRight: return Runtime.Get.ShouldersUnseatProbability.WhenHit(loadedOptions, typeOfDamage, strike);
+            case BoneBodyPartType.ArmLeft or BoneBodyPartType.ArmRight: return Runtime.Get.ArmsUnseatProbability.WhenHit(loadedOptions, typeOfDamage, strike);
+            case BoneBodyPartType.Legs: return Runtime.Get.LegsUnseatProbability.WhenHit(loadedOptions, typeOfDamage, strike);
          }
 
 

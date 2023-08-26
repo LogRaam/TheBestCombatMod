@@ -12,6 +12,7 @@ using TheBestCombatMod.Features.KnockedDown;
 using TheBestCombatMod.Features.KnockedDown.Options;
 using TheBestCombatMod.Features.Options;
 using TheBestCombatMod.Features.Unseat;
+using TheBestCombatMod.Features.Unseat.Body;
 using TheBestCombatMod.Features.Unseat.Options;
 using TheBestCombatMod.Features.Unseat.Weapon;
 
@@ -21,8 +22,11 @@ namespace TheBestCombatMod
 {
    internal class ModFactory : Factory
    {
+      private BodyPart _abdomen;
       private KnockedDownFeature _agentKnockedDownByBlow;
+      private BodyPart _arms;
       private AttackerOptions _attackerOptions;
+      private BodyPart _chest;
       private CombatActionEffect _CombatActionEffect;
       private ICampaignBehavior _configurationBehavior;
       private ConfigurationLoader _configurationLoader;
@@ -31,16 +35,20 @@ namespace TheBestCombatMod
       private FileTimeStamp _fileInteraction;
       private GlobalActivationValue _globalUnseatActivationRefTagValue;
       private GlobalValueRefTag _globalValueRefTag;
+      private BodyPart _head;
       private ImpactChanceOptions _impactUnseatChanceOptions;
       private KnockDownStrengthOption _knockDownStrengthOption;
       private KnockedDownActivationValue _knockedDownActivationValues;
       private KnockedDownByBlowConfiguration _knockedDownByBlowConfig;
       private KnockedDownProbability _knockedDownProbability;
       private KnockedDownValue _knockedDownValues;
+      private BodyPart _legs;
       private string[] _loadedOptions = Array.Empty<string>();
+      private BodyPart _neck;
       private OptionFileContent _optionFileContent;
       private SituationalDefenseInfo _protectionInfo;
       private MBFastRandom _random;
+      private BodyPart _shoulders;
       private SituationalDefenseInfo _situationalDefenseInfo;
       private StaggerStrengthOptions _staggerStrengthValue;
       private UnseatActivationValue _unseatActivationRefTag;
@@ -53,6 +61,18 @@ namespace TheBestCombatMod
       private UnseatValue _unseatValue;
       private WeaponStaggerForce _weaponStaggerForceValue;
 
+      public BodyPart AbdomenUnseatProbability
+      {
+         get => _abdomen ??= new AbdomenUnseatProbability();
+         set => _abdomen = value;
+      }
+
+      public BodyPart ArmsUnseatProbability
+      {
+         get => _arms ??= new ArmsUnseatProbability();
+         set => _arms = value;
+      }
+
       public AttackerOptions AttackerOptions
       {
          get
@@ -63,6 +83,12 @@ namespace TheBestCombatMod
          }
 
          set => _attackerOptions = value;
+      }
+
+      public BodyPart ChestUnseatProbability
+      {
+         get => _chest ??= new ChestUnseatProbability();
+         set => _chest = value;
       }
 
       public CombatActionEffect CombatActionEffect
@@ -125,6 +151,12 @@ namespace TheBestCombatMod
          set => _globalValueRefTag = value;
       }
 
+      public BodyPart HeadUnseatProbability
+      {
+         get => _head ??= new HeadUnseatProbability();
+         set => _head = value;
+      }
+
       public ImpactChanceOptions ImpactUnseatChanceOptions
       {
          get
@@ -171,10 +203,22 @@ namespace TheBestCombatMod
          set => _knockedDownValues = value;
       }
 
+      public BodyPart LegsUnseatProbability
+      {
+         get => _legs ??= new LegsUnseatProbability();
+         set => _legs = value;
+      }
+
       public string[] LoadedOptions
       {
          get => _loadedOptions = ConfigurationLoader.RetrieveConfigDetails(ConfigurationLoader.GetOptionFilePath());
          set => _loadedOptions = value;
+      }
+
+      public BodyPart NeckUnseatProbability
+      {
+         get => _neck ??= new NeckUnseatProbability();
+         set => _neck = value;
       }
 
       public OptionFileContent Options
@@ -193,6 +237,12 @@ namespace TheBestCombatMod
       {
          get => _random ??= new MBFastRandom();
          set => _random = value;
+      }
+
+      public BodyPart ShouldersUnseatProbability
+      {
+         get => _shoulders ??= new ShouldersUnseatProbability();
+         set => _shoulders = value;
       }
 
       public SituationalDefenseInfo SituationalDefenseInfo
