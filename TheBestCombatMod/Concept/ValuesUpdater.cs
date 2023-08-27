@@ -4,6 +4,6 @@ namespace TheBestCombatMod.Concept
 {
    public interface ValuesUpdater
    {
-      void Update(in string[] loadedOptions);
+      void Update();
    }
 }

@@ -81,7 +81,7 @@ namespace TheBestCombatMod
          AttackerOptions = Get.AttackerOptions;
          FileInteraction = Get.FileInteraction;
          ImpactDismountChance = Get.CombatActionEffect;
-         UnseatOptionsReader = Get.UnseatOptionReader;
+         UnseatOptionsReader = Get.UnseatByBlowOptionsReader;
          WeaponStaggerForceValue = Get.WeaponStaggerForceValue;
          DecideAgentKnockedDownByBlowKnockedDown = Get.DecideAgentKnockedDownByBlow;
          KnockDownStrenghtValue = Get.KnockDownStrengthOption;

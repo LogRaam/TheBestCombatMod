@@ -21,7 +21,7 @@ namespace TheBestCombatMod.Features.Unseat
          AttackCollisionData collision
       )
       {
-         var option = Runtime.Get.UnseatOptionReader;
+         var option = Runtime.Get.UnseatByBlowOptionsReader;
 
          if (!option.IsOptionActivated(loadedOptions, option.UnseatActivationValues.DismountedByBlow_Active)) return 0;
 
@@ -84,18 +84,18 @@ namespace TheBestCombatMod.Features.Unseat
       {
          var unseatProbability = Runtime.Get.UnseatProbability;
 
-         var armorResist = unseatProbability.ForStrikeAgainstArmor(loadedOptions, armorMaterialType, weaponClass, blow.StrikeType, blow.DamageType);
-         var effectOnBody = unseatProbability.ForTypeOfDamageOnBodyPart(loadedOptions, blow.StrikeType, blow.DamageType, blow.VictimBodyPart);
-         var bodyPartEffect = unseatProbability.ForTargetedBodyPart(loadedOptions, blow.VictimBodyPart);
-         var weightEffect = unseatProbability.WhenAttackerIsHeavier(loadedOptions, victimWeight, attackerWeight);
-         var healthEffect = unseatProbability.WhenAttackerIsHealthier(loadedOptions, victimHealth, victimMaxHealth, attackerHealth, attackerMaxHealth);
-         var buildEffect = unseatProbability.WhenAttackerIsStronger(loadedOptions, victimBuild, attackerBuild);
-         var guardEffect = unseatProbability.WhenVictimeDidNotRaiseHisGuard(loadedOptions, victimGuardMode);
-         var blowEffect = unseatProbability.WhenBlowIsCritical(loadedOptions, blow, victimMaxHealth);
-         var genderEffect = unseatProbability.IfAttackerIsWoman(loadedOptions, attackerIsFemale);
-         var thrustEffect = unseatProbability.WhenThrustTipHit(loadedOptions, thrustTipHit);
-         var inertiaEffect = unseatProbability.ForInertiaStrength(loadedOptions, inertia, attackerHasMount, movementSpeedDamageModifier);
-         var isNotMilitaryTrainedAdjust = unseatProbability.WhenAttackerIsNotTrained(loadedOptions, attackerIsSoldierOrHero);
+         var armorResist = unseatProbability.ForStrikeAgainstArmor(armorMaterialType, weaponClass, blow.StrikeType, blow.DamageType);
+         var effectOnBody = unseatProbability.ForTypeOfDamageOnBodyPart(blow.StrikeType, blow.DamageType, blow.VictimBodyPart);
+         var bodyPartEffect = unseatProbability.ForTargetedBodyPart(blow.VictimBodyPart);
+         var weightEffect = unseatProbability.WhenAttackerIsHeavier(victimWeight, attackerWeight);
+         var healthEffect = unseatProbability.WhenAttackerIsHealthier(victimHealth, victimMaxHealth, attackerHealth, attackerMaxHealth);
+         var buildEffect = unseatProbability.WhenAttackerIsStronger(victimBuild, attackerBuild);
+         var guardEffect = unseatProbability.WhenVictimeDidNotRaiseHisGuard(victimGuardMode);
+         var blowEffect = unseatProbability.WhenBlowIsCritical(blow, victimMaxHealth);
+         var genderEffect = unseatProbability.IfAttackerIsWoman(attackerIsFemale);
+         var thrustEffect = unseatProbability.WhenThrustTipHit(thrustTipHit);
+         var inertiaEffect = unseatProbability.ForInertiaStrength(inertia, attackerHasMount, movementSpeedDamageModifier);
+         var isNotMilitaryTrainedAdjust = unseatProbability.WhenAttackerIsNotTrained(attackerIsSoldierOrHero);
 
 
          var result = (int) ((bodyPartEffect

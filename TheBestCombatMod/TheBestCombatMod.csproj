@@ -68,14 +68,18 @@
     <Compile Include="Concept\AttackerInfo.cs" />
     <Compile Include="Concept\AttackerOptions.cs" />
     <Compile Include="Concept\AttackType.cs" />
+    <Compile Include="Concept\BodyHitProbability.cs" />
     <Compile Include="Concept\BodyPart.cs" />
     <Compile Include="Concept\BodyParts.cs" />
     <Compile Include="Concept\BodyPartsVulnerabilityOptions.cs" />
     <Compile Include="Concept\CombatActionEffect.cs" />
+    <Compile Include="Concept\Configuration.cs" />
     <Compile Include="Concept\DefenseInfo.cs" />
     <Compile Include="Concept\Factory.cs" />
     <Compile Include="Concept\KnockDownStrengthOption.cs" />
+    <Compile Include="Concept\KnockedDownConfig.cs" />
     <Compile Include="Concept\KnockedDownFeature.cs" />
+    <Compile Include="Concept\UnseatConfig.cs" />
     <Compile Include="Concept\UnseatOptionReader.cs" />
     <Compile Include="Features\KnockedDown\FootmanKnockedDownByBlowFeature.cs" />
     <Compile Include="Features\KnockedDown\Options\KnockDownStrenghtValue.cs" />
@@ -95,6 +99,7 @@
     <Compile Include="Features\Unseat\Armor\ArmorMaterialUnseatResistance.cs" />
     <Compile Include="Features\Unseat\Body\AbdomenUnseatProbability.cs" />
     <Compile Include="Features\Unseat\Body\ArmsUnseatProbability.cs" />
+    <Compile Include="Features\Unseat\Body\BodyHitUnseatProbability.cs" />
     <Compile Include="Features\Unseat\Body\ChestUnseatProbability.cs" />
     <Compile Include="Features\Unseat\Body\HeadUnseatProbability.cs" />
     <Compile Include="Features\Unseat\Body\LegsUnseatProbability.cs" />

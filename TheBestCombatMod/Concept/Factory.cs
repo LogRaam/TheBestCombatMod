@@ -17,6 +17,7 @@ namespace TheBestCombatMod.Concept
       ArmorResistance ArmorMaterialUnseatResistance { get; set; }
       BodyPart ArmsUnseatProbability { get; set; }
       AttackerOptions AttackerOptions { get; set; }
+      BodyHitProbability BodyHitUnseatProbability { get; set; }
       BodyPart ChestUnseatProbability { get; set; }
       CombatActionEffect CombatActionEffect { get; set; }
       ICampaignBehavior ConfigurationBehavior { get; set; }
@@ -37,7 +38,7 @@ namespace TheBestCombatMod.Concept
       MBFastRandom Random { get; set; }
       BodyPart ShouldersUnseatProbability { get; set; }
       BodyPartsVulnerabilityOptions UnseatBodyPartsVulnerabilityOptions { get; set; }
-      UnseatOptionReader UnseatOptionReader { get; set; }
+      UnseatOptionReader UnseatByBlowOptionsReader { get; set; }
       CombatActionEffect UnseatProbability { get; set; }
       ImpactResistanceOptions UnseatResistanceOptions { get; set; }
       StaggerStrengthOptions UnseatStaggerStrengthOptions { get; set; }

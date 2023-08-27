@@ -28,6 +28,7 @@ namespace TheBestCombatMod
       private ArmorResistance _armorMaterialUnseatResistance;
       private BodyPart _arms;
       private AttackerOptions _attackerOptions;
+      private BodyHitProbability _bodyHitUnseatProbability;
       private BodyPart _chest;
       private CombatActionEffect _CombatActionEffect;
       private ICampaignBehavior _configurationBehavior;
@@ -39,9 +40,12 @@ namespace TheBestCombatMod
       private GlobalValueRefTag _globalValueRefTag;
       private BodyPart _head;
       private ImpactChanceOptions _impactUnseatChanceOptions;
+      private ImpactUnseatChanceValueConstructorParams _impactUnseatChanceValue_params;
+      private UnseatConfigConstructorParams _knockDownStrenght_params;
       private KnockDownStrengthOption _knockDownStrengthOption;
       private KnockedDownActivationValue _knockedDownActivationValues;
       private KnockedDownByBlowConfiguration _knockedDownByBlowConfig;
+      private KnockedDownByBlowConfigurationConstructorParams _knockedDownByBlowConfigurationConstructorParams;
       private KnockedDownProbability _knockedDownProbability;
       private KnockedDownValue _knockedDownValues;
       private BodyPart _legs;
@@ -55,8 +59,8 @@ namespace TheBestCombatMod
       private StaggerStrengthOptions _staggerStrengthValue;
       private UnseatActivationValue _unseatActivationRefTag;
       private BodyPartsVulnerabilityOptions _unseatBodyPartsVulnerabilityOptions;
-      private UnseatFeature _unseatFeature;
       private UnseatOptionReader _unseatOptionReader;
+      private WeaponStaggerForceValueConstructorParams _unseatOptionsDto;
       private CombatActionEffect _unseatProbability;
       private ImpactResistanceOptions _unseatResistanceValue;
       private StaggerStrengthOptions _unseatStaggerStrengthOptions;
@@ -93,6 +97,12 @@ namespace TheBestCombatMod
          set => _attackerOptions = value;
       }
 
+      public BodyHitProbability BodyHitUnseatProbability
+      {
+         get => _bodyHitUnseatProbability ??= new BodyHitUnseatProbability();
+         set => _bodyHitUnseatProbability = value;
+      }
+
       public BodyPart ChestUnseatProbability
       {
          get => _chest ??= new ChestUnseatProbability();
@@ -101,7 +111,7 @@ namespace TheBestCombatMod
 
       public CombatActionEffect CombatActionEffect
       {
-         get => _CombatActionEffect ??= new UnseatProbability();
+         get => _CombatActionEffect ??= new UnseatProbability(LoadedOptions);
          set => _CombatActionEffect = value;
       }
 
@@ -169,18 +179,31 @@ namespace TheBestCombatMod
       {
          get
          {
-            if (LoadedOptions.Length > 0) _impactUnseatChanceOptions ??= new ImpactUnseatChanceValue(LoadedOptions);
+            if (LoadedOptions.Length > 0) _impactUnseatChanceOptions ??= new ImpactUnseatChanceValue(ImpactUnseatChanceValue_params);
 
             return _impactUnseatChanceOptions;
          }
          set => _impactUnseatChanceOptions = value;
       }
 
+      public ImpactUnseatChanceValueConstructorParams ImpactUnseatChanceValue_params
+      {
+         get => _impactUnseatChanceValue_params ??= new ImpactUnseatChanceValueParams(LoadedOptions, ConfigurationLoader, UnseatByBlowOptionsReader, UnseatStaggerStrengthOptions);
+         set => _impactUnseatChanceValue_params = value;
+      }
+
+      public UnseatConfigConstructorParams KnockDownStrenght_params
+      {
+         get => _knockDownStrenght_params ??= new UnseatConfigParams(LoadedOptions, ConfigurationLoader, KnockedDownValues);
+         set => _knockDownStrenght_params = value;
+      }
+
+
       public KnockDownStrengthOption KnockDownStrengthOption
       {
          get
          {
-            if (LoadedOptions.Length > 0) _knockDownStrengthOption ??= new KnockDownStrenghtValue(LoadedOptions);
+            if (LoadedOptions.Length > 0) _knockDownStrengthOption ??= new KnockDownStrenghtValue(KnockDownStrenght_params);
 
             return _knockDownStrengthOption;
          }
@@ -195,8 +218,23 @@ namespace TheBestCombatMod
 
       public KnockedDownByBlowConfiguration KnockedDownByBlowConfiguration
       {
-         get => _knockedDownByBlowConfig ??= new KnockedDownByBlowConfiguration(DefaultOptionReader, KnockedDownActivationValues, KnockedDownValues, GlobalActivationValues, GlobalValues);
+         get => _knockedDownByBlowConfig ??= new KnockedDownByBlowConfiguration(KnockedDownByBlowConfigurationParams);
          set => _knockedDownByBlowConfig = value;
+      }
+
+      public KnockedDownByBlowConfigurationConstructorParams KnockedDownByBlowConfigurationParams
+      {
+         get => _knockedDownByBlowConfigurationConstructorParams ??= new KnockedDownByBlowConfigurationParams(
+            DefaultOptionReader,
+            KnockedDownActivationValues,
+            KnockedDownValues,
+            GlobalActivationValues,
+            GlobalValues,
+            ConfigurationLoader,
+            UnseatImpactResistanceValue,
+            UnseatStaggerStrengthOptions
+         );
+         set => _knockedDownByBlowConfigurationConstructorParams = value;
       }
 
       public KnockedDownProbability KnockedDownProbability
@@ -276,6 +314,12 @@ namespace TheBestCombatMod
          set => _unseatBodyPartsVulnerabilityOptions = value;
       }
 
+      public UnseatOptionReader UnseatByBlowOptionsReader
+      {
+         get => _unseatOptionReader ??= new UnseatByBlowOptionsReader(DefaultOptionReader, UnseatActivationValues, UnseatValues, GlobalActivationValues, GlobalValues);
+         set => _unseatOptionReader = value;
+      }
+
 
       public ImpactResistanceOptions UnseatImpactResistanceValue
       {
@@ -288,15 +332,9 @@ namespace TheBestCombatMod
          set => _unseatResistanceValue = value;
       }
 
-      public UnseatOptionReader UnseatOptionReader
-      {
-         get => _unseatOptionReader ??= new UnseatByBlowOptionsReader(DefaultOptionReader, UnseatActivationValues, UnseatValues, GlobalActivationValues, GlobalValues);
-         set => _unseatOptionReader = value;
-      }
-
       public CombatActionEffect UnseatProbability
       {
-         get => _unseatProbability ??= new UnseatProbability();
+         get => _unseatProbability ??= new UnseatProbability(LoadedOptions);
          set => _unseatProbability = value;
       }
 
@@ -343,11 +381,17 @@ namespace TheBestCombatMod
       {
          get
          {
-            if (LoadedOptions.Length > 0) _weaponStaggerForceValue ??= new WeaponStaggerForceValue(LoadedOptions);
+            if (LoadedOptions.Length > 0) _weaponStaggerForceValue ??= new WeaponStaggerForceValue(WeaponStaggerForceValue_params);
 
             return _weaponStaggerForceValue;
          }
          set => _weaponStaggerForceValue = value;
+      }
+
+      public WeaponStaggerForceValueConstructorParams WeaponStaggerForceValue_params
+      {
+         get => _unseatOptionsDto ??= new WeaponStaggerForceValueParams(LoadedOptions, UnseatByBlowOptionsReader);
+         set => _unseatOptionsDto = value;
       }
 
       public WeaponType Dagger(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Dagger(in strikeType, in damageType, in materialType);
@@ -356,10 +400,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_CHAINMAIL_zI7qM_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_CHAINMAIL_tY3rN_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_CHAINMAIL_xU9eP_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_CHAINMAIL_cG5vL_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_CHAINMAIL_zI7qM_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_CHAINMAIL_tY3rN_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_CHAINMAIL_xU9eP_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_CHAINMAIL_cG5vL_Value
          };
 
          return result;
@@ -369,10 +413,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_CLOTH_iM0qR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_CLOTH_J8s2F_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_CLOTH_hN7Ye_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_CLOTH_3HkLg_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_CLOTH_iM0qR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_CLOTH_J8s2F_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_CLOTH_hN7Ye_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_CLOTH_3HkLg_Value
          };
 
          return result;
@@ -382,10 +426,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_LEATHER_yA2wC_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_LEATHER_bD1mK_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_LEATHER_fR6jP_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_LEATHER_9sT4p_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_LEATHER_yA2wC_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_LEATHER_bD1mK_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_LEATHER_fR6jP_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_LEATHER_9sT4p_Value
          };
 
          return result;
@@ -395,10 +439,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_PLATE_qB4fS_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_PLATE_lO6wE_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_PLATE_nZ8uR_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_PLATE_vX2jD_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_BLUNT_AGAINST_PLATE_qB4fS_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.DAGGER_SWING_CUT_AGAINST_PLATE_lO6wE_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_BLUNT_AGAINST_PLATE_nZ8uR_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.DAGGER_THRUST_PIERCE_AGAINST_PLATE_vX2jD_Value
          };
 
          return result;
@@ -410,10 +454,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_CHAINMAIL_pA3vR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_CHAINMAIL_nB7eU_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_CHAINMAIL_zD5tL_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_CHAINMAIL_xF9cV_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_CHAINMAIL_pA3vR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_CHAINMAIL_nB7eU_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_CHAINMAIL_zD5tL_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_CHAINMAIL_xF9cV_Value
          };
 
          return result;
@@ -423,10 +467,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_CLOTH_tA1vZ_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_CLOTH_rN5uX_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_CLOTH_kY3gW_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_CLOTH_mC9dH_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_CLOTH_tA1vZ_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_CLOTH_rN5uX_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_CLOTH_kY3gW_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_CLOTH_mC9dH_Value
          };
 
          return result;
@@ -436,10 +480,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_LEATHER_yM4aI_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_LEATHER_iK6xO_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_LEATHER_sU7nJ_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_LEATHER_pE8bQ_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_LEATHER_yM4aI_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_LEATHER_iK6xO_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_LEATHER_sU7nJ_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_LEATHER_pE8bQ_Value
          };
 
          return result;
@@ -449,10 +493,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_PLATE_tZ7uO_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_PLATE_rC4dP_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_PLATE_mY8bF_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_PLATE_oX1wM_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_BLUNT_AGAINST_PLATE_tZ7uO_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_SWING_CUT_AGAINST_PLATE_rC4dP_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_BLUNT_AGAINST_PLATE_mY8bF_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.JAVELIN_THRUST_PIERCE_AGAINST_PLATE_oX1wM_Value
          };
 
          return result;
@@ -464,10 +508,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_CHAINMAIL_mF2hZ_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_CHAINMAIL_rJ9xI_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_CHAINMAIL_kM3dV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_CHAINMAIL_qU7gT_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_CHAINMAIL_mF2hZ_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_CHAINMAIL_rJ9xI_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_CHAINMAIL_kM3dV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_CHAINMAIL_qU7gT_Value
          };
 
          return result;
@@ -477,10 +521,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_CLOTH_yE7rP_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_CLOTH_nJ2hQ_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_CLOTH_pC9xW_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_CLOTH_hR6zK_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_CLOTH_yE7rP_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_CLOTH_nJ2hQ_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_CLOTH_pC9xW_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_CLOTH_hR6zK_Value
          };
 
          return result;
@@ -490,10 +534,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_LEATHER_cD9fY_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_LEATHER_aT5zH_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_LEATHER_jN1xL_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_LEATHER_wB4mV_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_LEATHER_cD9fY_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_LEATHER_aT5zH_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_LEATHER_jN1xL_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_LEATHER_wB4mV_Value
          };
 
          return result;
@@ -503,10 +547,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_PLATE_vU7gQ_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_PLATE_tJ3hV_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_PLATE_lN8xG_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_PLATE_zB4mR_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_PLATE_vU7gQ_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_PLATE_tJ3hV_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_PLATE_lN8xG_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_PLATE_zB4mR_Value
          };
 
          return result;
@@ -518,10 +562,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_CHAINMAIL_pF1wK_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_CHAINMAIL_jY7gI_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_CHAINMAIL_wD8eV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_CHAINMAIL_aT2mZ_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_CHAINMAIL_pF1wK_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_CHAINMAIL_jY7gI_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_CHAINMAIL_wD8eV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_CHAINMAIL_aT2mZ_Value
          };
 
          return result;
@@ -531,10 +575,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_CLOTH_uB9fS_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_CLOTH_mQ7aN_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_CLOTH_tE5rW_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_CLOTH_bN3hU_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_CLOTH_uB9fS_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_CLOTH_mQ7aN_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_CLOTH_tE5rW_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_CLOTH_bN3hU_Value
          };
 
          return result;
@@ -544,10 +588,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_LEATHER_hR5vQ_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_LEATHER_qJ9cK_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_LEATHER_kP6xH_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_LEATHER_gM4zD_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_LEATHER_hR5vQ_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_LEATHER_qJ9cK_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_LEATHER_kP6xH_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_LEATHER_gM4zD_Value
          };
 
          return result;
@@ -557,10 +601,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE_lA8hY_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_PLATE_zE3dX_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE_vB9fQ_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE_nC6zT_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE_lA8hY_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_PLATE_zE3dX_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE_vB9fQ_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE_nC6zT_Value
          };
 
          return result;
@@ -572,10 +616,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_CHAINMAIL_sR4zT_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_CHAINMAIL_tA8hK_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CHAINMAIL_mC6xV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CHAINMAIL_nE2dG_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_CHAINMAIL_sR4zT_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_CHAINMAIL_tA8hK_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CHAINMAIL_mC6xV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CHAINMAIL_nE2dG_Value
          };
 
          return result;
@@ -585,10 +629,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_CLOTH_sJ4hQ_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_CLOTH_lM2dH_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CLOTH_kC9xT_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CLOTH_dR6zE_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_CLOTH_sJ4hQ_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_CLOTH_lM2dH_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CLOTH_kC9xT_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CLOTH_dR6zE_Value
          };
 
          return result;
@@ -598,10 +642,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_LEATHER_aF5zT_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_LEATHER_eJ9xI_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_LEATHER_xM3zV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_LEATHER_rU7gK_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_LEATHER_aF5zT_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_LEATHER_eJ9xI_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_LEATHER_xM3zV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_LEATHER_rU7gK_Value
          };
 
          return result;
@@ -611,10 +655,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_PLATE_qM5zE_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_PLATE_hU9gT_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_PLATE_bT2dK_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_PLATE_yE6xJ_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_BLUNT_AGAINST_PLATE_qM5zE_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_SWING_CUT_AGAINST_PLATE_hU9gT_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_BLUNT_AGAINST_PLATE_bT2dK_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_POLEARM_THRUST_PIERCE_AGAINST_PLATE_yE6xJ_Value
          };
 
          return result;
@@ -626,10 +670,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_CHAINMAIL_RgN3k_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_CHAINMAIL_UdBiS_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_CHAINMAIL_Unb84_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_CHAINMAIL_2Ng91_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_CHAINMAIL_RgN3k_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_CHAINMAIL_UdBiS_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_CHAINMAIL_Unb84_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_CHAINMAIL_2Ng91_Value
          };
 
          return result;
@@ -639,10 +683,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_CLOTH_64Lhv_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_CLOTH_U1GgF_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_CLOTH_oGmnS_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_CLOTH_kWNK9_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_CLOTH_64Lhv_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_CLOTH_U1GgF_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_CLOTH_oGmnS_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_CLOTH_kWNK9_Value
          };
 
          return result;
@@ -652,10 +696,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_LEATHER_tiuYy_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_LEATHER_HXuje_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_LEATHER_ljFbE_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_LEATHER_txKI6_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_LEATHER_tiuYy_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_LEATHER_HXuje_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_LEATHER_ljFbE_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_LEATHER_txKI6_Value
          };
 
          return result;
@@ -665,10 +709,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_PLATE_qLDxk_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_PLATE_jgMZR_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_PLATE_9DpM5_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_PLATE_GDD4U_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_BLUNT_AGAINST_PLATE_qLDxk_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_SWING_CUT_AGAINST_PLATE_jgMZR_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_BLUNT_AGAINST_PLATE_9DpM5_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.ONE_HANDED_SWORD_THRUST_PIERCE_AGAINST_PLATE_GDD4U_Value
          };
 
          return result;
@@ -691,10 +735,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_CHAINMAIL_kF9cR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.PICK_SWING_CUT_AGAINST_CHAINMAIL_xU3gA_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_CHAINMAIL_aN8xS_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_CHAINMAIL_eB4mW_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_CHAINMAIL_kF9cR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_CUT_AGAINST_CHAINMAIL_xU3gA_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_CHAINMAIL_aN8xS_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_CHAINMAIL_eB4mW_Value
          };
 
          return result;
@@ -704,10 +748,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_CLOTH_yB7gR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.PICK_SWING_CUT_AGAINST_CLOTH_nF5zV_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_CLOTH_qM2dA_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_CLOTH_xC9xT_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_CLOTH_yB7gR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_CUT_AGAINST_CLOTH_nF5zV_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_CLOTH_qM2dA_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_CLOTH_xC9xT_Value
          };
 
          return result;
@@ -717,10 +761,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_LEATHER_sU5zH_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.PICK_SWING_CUT_AGAINST_LEATHER_bJ2hT_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_LEATHER_pC9xV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_LEATHER_tR6zE_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_LEATHER_sU5zH_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_CUT_AGAINST_LEATHER_bJ2hT_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_LEATHER_pC9xV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_LEATHER_tR6zE_Value
          };
 
          return result;
@@ -730,10 +774,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_PLATE_lA8hY_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.PICK_SWING_CUT_AGAINST_PLATE_zE3dX_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_PLATE_vB9fQ_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_PLATE_nC6zT_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_BLUNT_AGAINST_PLATE_lA8hY_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.PICK_SWING_CUT_AGAINST_PLATE_zE3dX_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_BLUNT_AGAINST_PLATE_vB9fQ_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.PICK_THRUST_PIERCE_AGAINST_PLATE_nC6zT_Value
          };
 
          return result;
@@ -745,10 +789,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_CHAINMAIL_bQ5zE_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.STONE_SWING_CUT_AGAINST_CHAINMAIL_aU9gR_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_CHAINMAIL_fM4zG_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_CHAINMAIL_dE7rQ_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_CHAINMAIL_bQ5zE_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_CUT_AGAINST_CHAINMAIL_aU9gR_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_CHAINMAIL_fM4zG_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_CHAINMAIL_dE7rQ_Value
          };
 
          return result;
@@ -758,10 +802,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_CLOTH_kE9xR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.STONE_SWING_CUT_AGAINST_CLOTH_jN5uG_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_CLOTH_zC8xI_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_CLOTH_fG4zW_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_CLOTH_kE9xR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_CUT_AGAINST_CLOTH_jN5uG_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_CLOTH_zC8xI_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_CLOTH_fG4zW_Value
          };
 
          return result;
@@ -771,10 +815,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_LEATHER_uN9gS_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.STONE_SWING_CUT_AGAINST_LEATHER_pC3xV_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_LEATHER_rY8nA_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_LEATHER_qH4zP_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_LEATHER_uN9gS_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_CUT_AGAINST_LEATHER_pC3xV_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_LEATHER_rY8nA_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_LEATHER_qH4zP_Value
          };
 
          return result;
@@ -784,10 +828,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_PLATE_kN4zI_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.STONE_SWING_CUT_AGAINST_PLATE_zC8xG_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_PLATE_nY3hA_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_PLATE_tH7xQ_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_BLUNT_AGAINST_PLATE_kN4zI_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.STONE_SWING_CUT_AGAINST_PLATE_zC8xG_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_BLUNT_AGAINST_PLATE_nY3hA_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.STONE_THRUST_PIERCE_AGAINST_PLATE_tH7xQ_Value
          };
 
          return result;
@@ -799,10 +843,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_CHAINMAIL_tQ5zR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_CHAINMAIL_aH8xV_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_CHAINMAIL_rT3zG_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_CHAINMAIL_bN4zT_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_CHAINMAIL_tQ5zR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_CHAINMAIL_aH8xV_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_CHAINMAIL_rT3zG_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_CHAINMAIL_bN4zT_Value
          };
 
          return result;
@@ -812,10 +856,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_CLOTH_mT8xU_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_CLOTH_sN4zR_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_CLOTH_kD9xL_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_CLOTH_fU5zH_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_CLOTH_mT8xU_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_CLOTH_sN4zR_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_CLOTH_kD9xL_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_CLOTH_fU5zH_Value
          };
 
          return result;
@@ -825,10 +869,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_LEATHER_nC9xI_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_LEATHER_wG6xR_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_LEATHER_tH3zA_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_LEATHER_vE7gV_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_LEATHER_nC9xI_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_LEATHER_wG6xR_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_LEATHER_tH3zA_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_LEATHER_vE7gV_Value
          };
 
          return result;
@@ -838,10 +882,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_PLATE_dH7gV_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_PLATE_iE8xL_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_PLATE_fT4zA_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_PLATE_sU9gH_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_BLUNT_AGAINST_PLATE_dH7gV_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_SWING_CUT_AGAINST_PLATE_iE8xL_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_BLUNT_AGAINST_PLATE_fT4zA_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_AXE_THRUST_PIERCE_AGAINST_PLATE_sU9gH_Value
          };
 
          return result;
@@ -853,10 +897,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_CHAINMAIL_mJ2hU_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_CHAINMAIL_lR5zH_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_CHAINMAIL_jG8xT_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_CHAINMAIL_aG6xI_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_CHAINMAIL_mJ2hU_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_CHAINMAIL_lR5zH_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_CHAINMAIL_jG8xT_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_CHAINMAIL_aG6xI_Value
          };
 
          return result;
@@ -866,10 +910,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_CLOTH_gU5zV_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_CLOTH_qH8xG_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_CLOTH_bN4zA_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_CLOTH_zD9xT_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_CLOTH_gU5zV_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_CLOTH_qH8xG_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_CLOTH_bN4zA_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_CLOTH_zD9xT_Value
          };
 
          return result;
@@ -879,10 +923,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_LEATHER_kT3zR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_LEATHER_mH7gA_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_LEATHER_zE9xL_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_LEATHER_wT4zE_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_LEATHER_kT3zR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_LEATHER_mH7gA_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_LEATHER_zE9xL_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_LEATHER_wT4zE_Value
          };
 
          return result;
@@ -892,10 +936,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE_pS5zE_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_PLATE_jC9xR_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE_dU6xV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE_bH4zG_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE_pS5zE_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_PLATE_jC9xR_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE_dU6xV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE_bH4zG_Value
          };
 
          return result;
@@ -907,10 +951,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_CHAINMAIL_lJ2hT_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_CHAINMAIL_fR5zA_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CHAINMAIL_pG8xV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CHAINMAIL_kG6xU_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_CHAINMAIL_lJ2hT_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_CHAINMAIL_fR5zA_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CHAINMAIL_pG8xV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CHAINMAIL_kG6xU_Value
          };
 
          return result;
@@ -920,10 +964,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_CLOTH_vH8xR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_CLOTH_mD4zE_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CLOTH_yN7xL_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CLOTH_zH4zW_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_CLOTH_vH8xR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_CLOTH_mD4zE_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_CLOTH_yN7xL_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_CLOTH_zH4zW_Value
          };
 
          return result;
@@ -933,10 +977,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_LEATHER_yT3zH_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_LEATHER_bE7gA_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_LEATHER_gN4zG_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_LEATHER_cT9xI_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_LEATHER_yT3zH_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_LEATHER_bE7gA_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_LEATHER_gN4zG_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_LEATHER_cT9xI_Value
          };
 
          return result;
@@ -946,10 +990,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_PLATE_kD3zA_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_PLATE_rN9gR_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_PLATE_mH6xV_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_PLATE_eS4zG_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_BLUNT_AGAINST_PLATE_kD3zA_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_SWING_CUT_AGAINST_PLATE_rN9gR_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_BLUNT_AGAINST_PLATE_mH6xV_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_POLEARM_THRUST_PIERCE_AGAINST_PLATE_eS4zG_Value
          };
 
          return result;
@@ -961,10 +1005,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_CHAINMAIL_dH8xT_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_CHAINMAIL_yN7xI_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_CHAINMAIL_fE4zR_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_CHAINMAIL_aT9xL_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_CHAINMAIL_dH8xT_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_CHAINMAIL_yN7xI_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_CHAINMAIL_fE4zR_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_CHAINMAIL_aT9xL_Value
          };
 
          return result;
@@ -974,10 +1018,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_CLOTH_dH8xR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_CLOTH_yN7xG_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_CLOTH_nE4zA_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_CLOTH_wT9xP_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_CLOTH_dH8xR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_CLOTH_yN7xG_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_CLOTH_nE4zA_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_CLOTH_wT9xP_Value
          };
 
          return result;
@@ -987,10 +1031,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_LEATHER_lH8xV_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_LEATHER_tN7xH_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_LEATHER_xE4zG_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_LEATHER_wT9xT_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_LEATHER_lH8xV_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_LEATHER_tN7xH_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_LEATHER_xE4zG_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_LEATHER_wT9xT_Value
          };
 
          return result;
@@ -1000,10 +1044,10 @@ namespace TheBestCombatMod
       {
          var result = new AttackTypeDto
          {
-            Swing_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_PLATE_lH8xR_Value,
-            Swing_Cut = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_PLATE_tN7xL_Value,
-            Thrust_Blunt = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_PLATE_xE4zH_Value,
-            Thrust_Pierce = UnseatOptionReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_PLATE_wT9xG_Value
+            Swing_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_PLATE_lH8xR_Value,
+            Swing_Cut = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_SWING_CUT_AGAINST_PLATE_tN7xL_Value,
+            Thrust_Blunt = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_BLUNT_AGAINST_PLATE_xE4zH_Value,
+            Thrust_Pierce = UnseatByBlowOptionsReader.UnseatValues.TWO_HANDED_SWORD_THRUST_PIERCE_AGAINST_PLATE_wT9xG_Value
          };
 
          return result;

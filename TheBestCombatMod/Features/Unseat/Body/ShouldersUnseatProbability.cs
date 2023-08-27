@@ -13,7 +13,7 @@ namespace TheBestCombatMod.Features.Unseat.Body
    {
       public int WhenHit(in string[] loadedOptions, DamageTypes typeOfDamage, StrikeType strike)
       {
-         var option = Runtime.Get.UnseatOptionReader;
+         var option = Runtime.Get.UnseatByBlowOptionsReader;
          switch (typeOfDamage)
          {
             case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.SHOULDERS_CUT_SWINGING_8yoXK_Value);

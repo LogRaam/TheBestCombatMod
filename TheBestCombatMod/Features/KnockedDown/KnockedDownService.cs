@@ -43,7 +43,7 @@ namespace TheBestCombatMod.Features.KnockedDown
          if (KnockdownDisqualified(attackerAgent, victimAgent, attackerWeapon, blow, collisionData.IsHorseCharge)) return true;
 
 
-         var option = Runtime.Get.UnseatOptionReader;
+         var option = Runtime.Get.UnseatByBlowOptionsReader;
          var loggerActivated = option.IsOptionActivated(Runtime.LoadedOptions.GetContent(), option.GolbalActivationValues.ShowInformationMessagesInGameLogger_Active);
 
          if (victimAgent.WieldedOffhandWeapon.Item != null)

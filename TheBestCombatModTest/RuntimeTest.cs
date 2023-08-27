@@ -25,6 +25,7 @@ namespace TheBestCombatModTest
          Runtime.Loader = loader;
          Runtime.LoadedOptions = new Options(loader);
          Runtime.FileInteraction = new FileInteraction(loader.GetOptionFilePath());
+         Runtime.Update(loader);
 
          //Assert
          Runtime.LoadedOptions.Should().NotBeNull();

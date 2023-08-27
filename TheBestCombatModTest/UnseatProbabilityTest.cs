@@ -24,11 +24,11 @@ namespace TheBestCombatModTest
       public void ForInertiaStrength_Test()
       {
          //Given
-         var sut = new UnseatProbability();
+         var sut = new UnseatProbability(Runtime.LoadedOptions.GetContent());
          var expectedResult = 16;
 
          //When
-         var actualResult = sut.ForInertiaStrength(Runtime.LoadedOptions.GetContent(), 2.0f, false, 0);
+         var actualResult = sut.ForInertiaStrength(2.0f, false, 0);
 
          //Then
          actualResult.Should().Be(expectedResult);
@@ -64,11 +64,11 @@ namespace TheBestCombatModTest
       public void GivenIHaveInertia_WhenAttackerIsOnHorseback_ThenValueIsMultipliedByOptionValue()
       {
          //Given
-         var sut = new UnseatProbability();
+         var sut = new UnseatProbability(Runtime.LoadedOptions.GetContent());
          var expectedResult = 33;
 
          //When
-         var actualResult = sut.ForInertiaStrength(Runtime.LoadedOptions.GetContent(), 2.0f, true, 0);
+         var actualResult = sut.ForInertiaStrength(2.0f, true, 0);
 
          //Then
          actualResult.Should().Be(expectedResult);

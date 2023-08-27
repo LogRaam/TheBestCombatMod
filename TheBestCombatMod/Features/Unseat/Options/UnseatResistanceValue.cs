@@ -10,9 +10,12 @@ namespace TheBestCombatMod.Features.Unseat.Options
 {
    public class UnseatImpactResistanceValue : ImpactResistanceOptions
    {
+      private readonly string[] _loadedOptions;
+
       public UnseatImpactResistanceValue(in string[] loadedOptions)
       {
-         Update(loadedOptions);
+         _loadedOptions = loadedOptions;
+         Update();
       }
 
       public int Formidable { get; set; }
@@ -45,24 +48,24 @@ namespace TheBestCombatMod.Features.Unseat.Options
 
       public int ResistanceBonus(in string[] loadedOptions, int weaponForce, string valueTag)
       {
-         var materialResistance = Runtime.Get.UnseatOptionReader.GetAlphaValueFor(loadedOptions, valueTag);
+         var materialResistance = Runtime.Get.UnseatByBlowOptionsReader.GetAlphaValueFor(_loadedOptions, valueTag);
          weaponForce = (int) -(weaponForce * 1.15 - materialResistance);
 
          return weaponForce;
       }
 
-      public void Update(in string[] loadedOptions)
+      public void Update()
       {
-         if (loadedOptions.Length == 0) return;
+         if (_loadedOptions.Length == 0) return;
 
          var loader = Runtime.Get.ConfigurationLoader;
-         var option = Runtime.Get.UnseatOptionReader;
+         var option = Runtime.Get.UnseatByBlowOptionsReader;
 
-         None = loader.RetrieveIntegerValueFrom(loadedOptions, option.UnseatValues.Resistance_Strength_NONE_P5V27_Value);
-         Formidable = loader.RetrieveIntegerValueFrom(loadedOptions, option.UnseatValues.Resistance_Strength_FORMIDABLE_3l4Jw_Value);
-         Low = loader.RetrieveIntegerValueFrom(loadedOptions, option.UnseatValues.Resistance_Strength_LOW_sMtnq_Value);
-         Moderate = loader.RetrieveIntegerValueFrom(loadedOptions, option.UnseatValues.Resistance_Strength_MODERATE_gEghq_Value);
-         Strong = loader.RetrieveIntegerValueFrom(loadedOptions, option.UnseatValues.Resistance_Strength_STRONG_AX48F_Value);
+         None = loader.RetrieveIntegerValueFrom(_loadedOptions, option.UnseatValues.Resistance_Strength_NONE_P5V27_Value);
+         Formidable = loader.RetrieveIntegerValueFrom(_loadedOptions, option.UnseatValues.Resistance_Strength_FORMIDABLE_3l4Jw_Value);
+         Low = loader.RetrieveIntegerValueFrom(_loadedOptions, option.UnseatValues.Resistance_Strength_LOW_sMtnq_Value);
+         Moderate = loader.RetrieveIntegerValueFrom(_loadedOptions, option.UnseatValues.Resistance_Strength_MODERATE_gEghq_Value);
+         Strong = loader.RetrieveIntegerValueFrom(_loadedOptions, option.UnseatValues.Resistance_Strength_STRONG_AX48F_Value);
       }
    }
 }

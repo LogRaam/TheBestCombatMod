@@ -2,6 +2,7 @@
 
 #region
 
+using LogRaamConfiguration;
 using TheBestCombatMod.Concept;
 
 #endregion
@@ -10,9 +11,16 @@ namespace TheBestCombatMod.Features.KnockedDown.Options
 {
    public class KnockDownStrenghtValue : KnockDownStrengthOption
    {
-      public KnockDownStrenghtValue(in string[] loadedOptions)
+      private readonly ConfigurationLoader _configLoader;
+      private readonly KnockedDownValue _knockedDownValue;
+      private readonly string[] _loadedOptions;
+
+      public KnockDownStrenghtValue(UnseatConfigConstructorParams parameters)
       {
-         Update(loadedOptions);
+         _loadedOptions = parameters.LoadedOptions;
+         _configLoader = parameters.ConfigLoader;
+         _knockedDownValue = parameters.KnockedDownValue;
+         Update();
       }
 
       public int Formidable { get; set; }
@@ -39,19 +47,41 @@ namespace TheBestCombatMod.Features.KnockedDown.Options
          }
       }
 
-      public void Update(in string[] loadedOptions)
+      public void Update()
       {
-         if (loadedOptions.Length == 0) return;
+         if (_loadedOptions.Length == 0) return;
 
-         var loader = Runtime.Get.ConfigurationLoader;
-         var option = Runtime.Get.KnockedDownByBlowConfiguration;
-
-         Formidable = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_FORMIDABLE_y34fA_Value);
-         Low = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_LOW_Sld4t_Value);
-         Minimal = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_MINIMAL_37EAs_Vlaue);
-         Moderate = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_MODERATE_azdWq_Value);
-         Strong = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_STRONG_Jt2ES_Value);
-         None = loader.RetrieveIntegerValueFrom(loadedOptions, option.KnockedDownUnseatValueTags.Knockdown_Strength_NONE_XBGV0_Value);
+         Formidable = _configLoader.RetrieveIntegerValueFrom(_loadedOptions, _knockedDownValue.Knockdown_Strength_FORMIDABLE_y34fA_Value);
+         Low = _configLoader.RetrieveIntegerValueFrom(_loadedOptions, _knockedDownValue.Knockdown_Strength_LOW_Sld4t_Value);
+         Minimal = _configLoader.RetrieveIntegerValueFrom(_loadedOptions, _knockedDownValue.Knockdown_Strength_MINIMAL_37EAs_Vlaue);
+         Moderate = _configLoader.RetrieveIntegerValueFrom(_loadedOptions, _knockedDownValue.Knockdown_Strength_MODERATE_azdWq_Value);
+         Strong = _configLoader.RetrieveIntegerValueFrom(_loadedOptions, _knockedDownValue.Knockdown_Strength_STRONG_Jt2ES_Value);
+         None = _configLoader.RetrieveIntegerValueFrom(_loadedOptions, _knockedDownValue.Knockdown_Strength_NONE_XBGV0_Value);
       }
+   }
+
+
+   public class UnseatConfigParams : UnseatConfigConstructorParams
+   {
+      public UnseatConfigParams(in string[] loadedOptions,
+                                in ConfigurationLoader configLoader,
+                                KnockedDownValue knockedDownValue)
+      {
+         ConfigLoader = configLoader;
+         LoadedOptions = loadedOptions;
+         KnockedDownValue = knockedDownValue;
+      }
+
+      public ConfigurationLoader ConfigLoader { get; set; }
+      public KnockedDownValue KnockedDownValue { get; set; }
+      public string[] LoadedOptions { get; set; }
+   }
+
+
+   public interface UnseatConfigConstructorParams
+   {
+      ConfigurationLoader ConfigLoader { get; set; }
+      KnockedDownValue KnockedDownValue { get; set; }
+      string[] LoadedOptions { get; set; }
    }
 }

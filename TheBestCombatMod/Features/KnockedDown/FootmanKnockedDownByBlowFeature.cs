@@ -23,7 +23,7 @@ namespace TheBestCombatMod.Features.KnockedDown
       {
          var option = Runtime.Get.KnockedDownByBlowConfiguration;
 
-         if (!option.IsOptionActivated(loadedOptions, option.KnockedDownUnseatActivationTagValue.KnockedDownByBlow_Active)) return 0;
+         if (!option.IsOptionActivated(loadedOptions, option.KnockedDownUnseatActiveTagValue.KnockedDownByBlow_Active)) return 0;
 
          var armorMaterialType = Runtime.Get.ProtectionInfo.GetArmorMaterialType(victimAgent, blow);
 

@@ -16,7 +16,7 @@ namespace TheBestCombatMod.Features.KnockedDown
 
       public int ForStrikeAgainstArmor(in string[] loadedOptions, ArmorComponent.ArmorMaterialTypes armorMaterialType, WeaponClass attackerWeaponClass, StrikeType strikeType, DamageTypes blowDamageType)
       {
-         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActivationTagValue.KnockedDownByBlow_Active)) return 0;
+         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActiveTagValue.KnockedDownByBlow_Active)) return 0;
 
          var bonus = Runtime.Get.ProtectionInfo.GetResistanceBonusFrom(loadedOptions, attackerWeaponClass, strikeType, blowDamageType, armorMaterialType);
 
@@ -26,7 +26,7 @@ namespace TheBestCombatMod.Features.KnockedDown
 
       public int OnBodyPart(in string[] loadedOptions, StrikeType strike, DamageTypes damageType, BoneBodyPartType victimBodyPart)
       {
-         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActivationTagValue.EffectOnBodyPart_Active)) return 0;
+         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActiveTagValue.EffectOnBodyPart_Active)) return 0;
 
          if (victimBodyPart == BoneBodyPartType.None || damageType == DamageTypes.Invalid || strike == StrikeType.Invalid)
          {
@@ -131,7 +131,7 @@ namespace TheBestCombatMod.Features.KnockedDown
 
       public int WhenAttackerIsHealthier(in string[] loadedOptions, float victimHealth, int victimMaxHealth, float attackerHealth, float attackerMaxHealth)
       {
-         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActivationTagValue.WhenAttackerIsHealthier_Active)) return 0;
+         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActiveTagValue.WhenAttackerIsHealthier_Active)) return 0;
 
          if (Math.Abs(victimHealth - attackerHealth) < 0.0001) return 0;
 
@@ -151,7 +151,7 @@ namespace TheBestCombatMod.Features.KnockedDown
       {
          var option = Runtime.Get.KnockedDownByBlowConfiguration;
 
-         if (!option.IsOptionActivated(loadedOptions, option.KnockedDownUnseatActivationTagValue.ReduceProbabilityForPeasants)) return 0;
+         if (!option.IsOptionActivated(loadedOptions, option.KnockedDownUnseatActiveTagValue.ReduceProbabilityForPeasants)) return 0;
 
          var result = option.GetIntegerValueFor(loadedOptions, option.KnockedDownUnseatValueTags.PEASANT_REDUCE_PROBABILITY_BY);
 
@@ -163,7 +163,7 @@ namespace TheBestCombatMod.Features.KnockedDown
 
       public int WhenBadlyHurt(in string[] loadedOptions, float victimHealth, int victimMaxHealth)
       {
-         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActivationTagValue.WhenBadlyHurt_Active)) return 0;
+         if (IsNotActivated(loadedOptions, _configuration.KnockedDownUnseatActiveTagValue.WhenBadlyHurt_Active)) return 0;
 
          var result = GetPercentageFrom(victimHealth, victimMaxHealth);
          var treshold = _configuration.GetIntegerValueFor(loadedOptions, _configuration.KnockedDownUnseatValueTags.TresholdValueWhenBadlyHurt_5w5jT_Value);

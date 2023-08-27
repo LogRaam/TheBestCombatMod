@@ -9,58 +9,113 @@ using TheBestCombatMod.Concept;
 
 namespace TheBestCombatMod.Features.KnockedDown
 {
-   public class KnockedDownByBlowConfiguration
+   public class KnockedDownByBlowConfiguration : Configuration
    {
-      public readonly GlobalActivationValue GlobalUnseatActivationRefTagValue;
-      public readonly GlobalValueRefTag GlobalValueRefTag;
-      public readonly KnockedDownActivationValue KnockedDownUnseatActivationTagValue;
-      public readonly KnockedDownValue KnockedDownUnseatValueTags;
-      private readonly OptionReader _defaultOptionReader;
-
-      public KnockedDownByBlowConfiguration(OptionReader defaultOptionReader, KnockedDownActivationValue knockedDownUnseatActiveTagValue, KnockedDownValue knockedDownUnseatValueTag, GlobalActivationValue globalActivTagValue, GlobalValueRefTag globalValTag)
+      public KnockedDownByBlowConfiguration(KnockedDownByBlowConfigurationConstructorParams parameters)
       {
-         _defaultOptionReader = defaultOptionReader;
-         GlobalUnseatActivationRefTagValue = globalActivTagValue;
-         GlobalValueRefTag = globalValTag;
-         KnockedDownUnseatActivationTagValue = knockedDownUnseatActiveTagValue;
-         KnockedDownUnseatValueTags = knockedDownUnseatValueTag;
+         DefaultOptionsReader = parameters.DefaultOptionReader;
+         GlobalUnseatActivationRefTag = parameters.GlobalActivTagValue;
+         GlobalUnseatValueRefTag = parameters.GlobalValTag;
+         KnockedDownUnseatActiveTagValue = parameters.KnockedDownUnseatActiveTagValue;
+         KnockedDownUnseatValueTags = parameters.KnockedDownUnseatValueTag;
+         Loader = parameters.ConfigurationLoader;
+         UnseatImpactResistance = parameters.ImpactResistanceOptions;
+         StaggerStrength = parameters.StaggerStrengthOptions;
+         KnockDownStrengthOption = parameters.KnockDownStrengthOption;
       }
 
-      public float GetFloatValueFor(in string[] content, string valueTag) => Runtime.Get.ConfigurationLoader.RetrieveFloatValueFrom(content, valueTag);
+      public OptionReader DefaultOptionsReader { get; set; }
+      public GlobalActivationValue GlobalUnseatActivationRefTag { get; set; }
+      public GlobalValueRefTag GlobalUnseatValueRefTag { get; set; }
+      public KnockDownStrengthOption KnockDownStrengthOption { get; set; }
+      public KnockedDownActivationValue KnockedDownUnseatActiveTagValue { get; set; }
+      public KnockedDownValue KnockedDownUnseatValueTags { get; set; }
+      public ConfigurationLoader Loader { get; set; }
+      public StaggerStrengthOptions StaggerStrength { get; set; }
+      public ImpactResistanceOptions UnseatImpactResistance { get; set; }
 
-      public int GetIntegerValueFor(in string[] content, string valueTag) => Runtime.Get.ConfigurationLoader.RetrieveIntegerValueFrom(content, valueTag);
+
+      public float GetFloatValueFor(in string[] loadedOptions, string valueTag) => Loader.RetrieveFloatValueFrom(loadedOptions, valueTag);
+
+      public int GetIntegerValueFor(in string[] loadedOptions, string valueTag) => Loader.RetrieveIntegerValueFrom(loadedOptions, valueTag);
 
       public int GetKnockdownAlphaValueFor(in string[] loadedOptions, string valueTag)
       {
-         var s = Runtime.Get.ConfigurationLoader.RetrieveAlphaValueFrom(loadedOptions, valueTag).ToLower();
-         var result = Runtime.KnockDownStrenghtValue.Convert(s);
+         var s = Loader.RetrieveAlphaValueFrom(loadedOptions, valueTag).ToLower();
+         var result = KnockDownStrengthOption.Convert(s);
 
          return result;
       }
 
-      public int GetResistanceAlphaValueFor(in string[] content, string valueTag)
+      public int GetResistanceAlphaValueFor(in string[] loadedOptions, string valueTag)
       {
-         var s = Runtime.Get.ConfigurationLoader.RetrieveAlphaValueFrom(content, valueTag).ToLower();
-         var result = Runtime.UnseatImpactResistance.Convert(s);
+         var s = Loader.RetrieveAlphaValueFrom(loadedOptions, valueTag).ToLower();
+         var result = UnseatImpactResistance.Convert(s);
 
          return result;
       }
 
-      public int GetStaggerAlphaValueFor(in string[] content, string valueTag)
+      public int GetStaggerAlphaValueFor(in string[] loadedOptions, string valueTag)
       {
-         var s = Runtime.Get.ConfigurationLoader.RetrieveAlphaValueFrom(content, valueTag).ToLower();
-         var result = Runtime.StaggerStrength.Convert(s);
+         var s = Loader.RetrieveAlphaValueFrom(loadedOptions, valueTag).ToLower();
+         var result = StaggerStrength.Convert(s);
 
          return result;
       }
 
 
-      public bool IsOptionActivated(in string[] content, string activeTag) => RetrieveAnswerFor(content, activeTag);
+      public bool IsOptionActivated(in string[] loadedOptions, string activeTag) => RetrieveAnswerFor(loadedOptions, activeTag);
 
-      #region private
+      public bool RetrieveAnswerFor(in string[] loadedOptions, string tag) => Runtime.Get.ConfigurationLoader.IsLineExistInStruct(loadedOptions, tag);
+   }
 
-      private bool RetrieveAnswerFor(in string[] content, string tag) => Runtime.Get.ConfigurationLoader.IsLineExistInStruct(content, tag);
 
-      #endregion
+   public class KnockedDownByBlowConfigurationParams : KnockedDownByBlowConfigurationConstructorParams
+   {
+      public KnockedDownByBlowConfigurationParams(
+         OptionReader defaultOptionReader,
+         KnockedDownActivationValue knockedDownUnseatActiveTagValue,
+         KnockedDownValue knockedDownUnseatValueTag,
+         GlobalActivationValue globalActivTagValue,
+         GlobalValueRefTag globalValTag,
+         ConfigurationLoader loader,
+         ImpactResistanceOptions impactResistanceOptions,
+         StaggerStrengthOptions staggerStrengthOptions
+      )
+      {
+         DefaultOptionReader = defaultOptionReader;
+         GlobalActivTagValue = globalActivTagValue;
+         GlobalValTag = globalValTag;
+         KnockedDownUnseatActiveTagValue = knockedDownUnseatActiveTagValue;
+         KnockedDownUnseatValueTag = knockedDownUnseatValueTag;
+         ConfigurationLoader = loader;
+         ImpactResistanceOptions = impactResistanceOptions;
+         StaggerStrengthOptions = staggerStrengthOptions;
+      }
+
+      public ConfigurationLoader ConfigurationLoader { get; set; }
+
+
+      public OptionReader DefaultOptionReader { get; set; }
+      public GlobalActivationValue GlobalActivTagValue { get; set; }
+      public GlobalValueRefTag GlobalValTag { get; set; }
+      public ImpactResistanceOptions ImpactResistanceOptions { get; set; }
+      public KnockDownStrengthOption KnockDownStrengthOption { get; set; }
+      public KnockedDownActivationValue KnockedDownUnseatActiveTagValue { get; set; }
+      public KnockedDownValue KnockedDownUnseatValueTag { get; set; }
+      public StaggerStrengthOptions StaggerStrengthOptions { get; set; }
+   }
+
+   public interface KnockedDownByBlowConfigurationConstructorParams
+   {
+      ConfigurationLoader ConfigurationLoader { get; set; }
+      OptionReader DefaultOptionReader { get; set; }
+      GlobalActivationValue GlobalActivTagValue { get; set; }
+      GlobalValueRefTag GlobalValTag { get; set; }
+      ImpactResistanceOptions ImpactResistanceOptions { get; set; }
+      KnockDownStrengthOption KnockDownStrengthOption { get; set; }
+      KnockedDownActivationValue KnockedDownUnseatActiveTagValue { get; set; }
+      KnockedDownValue KnockedDownUnseatValueTag { get; set; }
+      StaggerStrengthOptions StaggerStrengthOptions { get; set; }
    }
 }
