@@ -2,7 +2,6 @@
 
 #region
 
-using System;
 using TaleWorlds.Core;
 using TheBestCombatMod.Concept;
 
@@ -15,7 +14,7 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
       public readonly DamageTypes DamageType;
       public readonly StrikeType StrikeType;
       public ArmorComponent.ArmorMaterialTypes MaterialType;
-
+      private int _weaponForce;
 
       public TwoHandedMace(in StrikeType strikeType,
                            in DamageTypes damageType,
@@ -24,106 +23,26 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
          StrikeType = strikeType;
          DamageType = damageType;
          MaterialType = materialType;
+         _weaponForce = Runtime.WeaponStaggerForceValue.TwoHandedMace;
       }
 
-      public int ChainmailResistanceBonus() => throw new NotImplementedException();
-
-      public int ChainmailSwingResistance() => throw new NotImplementedException();
-
-      public int ChainmailThrustResistance() => throw new NotImplementedException();
-
-      public int ClothResistanceBonus() => throw new NotImplementedException();
-
-      public int ClothSwingResistance() => throw new NotImplementedException();
-
-      public int ClothThrustResistance() => throw new NotImplementedException();
 
       public int GetResistanceBonus(in string[] loadedOptions)
       {
-         var weaponForce = Runtime.WeaponStaggerForceValue.TwoHandedMace;
-
-         var option = Runtime.Get.UnseatOptionReader;
-
-
          if (MaterialType == ArmorComponent.ArmorMaterialTypes.None)
          {
-            weaponForce = (int) (weaponForce * 1.5);
+            _weaponForce = (int) (_weaponForce * 1.5);
             MaterialType = ArmorComponent.ArmorMaterialTypes.Cloth;
          }
 
-         if (MaterialType == ArmorComponent.ArmorMaterialTypes.Cloth)
+         return MaterialType switch
          {
-            if (StrikeType == StrikeType.Swing)
-            {
-               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_CLOTH_qH8xG_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_CLOTH_gU5zV_Value);
-            }
-
-            if (StrikeType == StrikeType.Thrust)
-            {
-               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_CLOTH_zD9xT_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_CLOTH_bN4zA_Value);
-            }
-         }
-
-         if (MaterialType == ArmorComponent.ArmorMaterialTypes.Leather)
-         {
-            if (StrikeType == StrikeType.Swing)
-            {
-               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_LEATHER_mH7gA_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_LEATHER_kT3zR_Value);
-            }
-
-            if (StrikeType == StrikeType.Thrust)
-            {
-               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_LEATHER_wT4zE_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_LEATHER_zE9xL_Value);
-            }
-         }
-
-         if (MaterialType == ArmorComponent.ArmorMaterialTypes.Chainmail)
-         {
-            if (StrikeType == StrikeType.Swing)
-            {
-               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_CHAINMAIL_lR5zH_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_CHAINMAIL_mJ2hU_Value);
-            }
-
-            if (StrikeType == StrikeType.Thrust)
-            {
-               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_CHAINMAIL_aG6xI_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_CHAINMAIL_jG8xT_Value);
-            }
-         }
-
-         if (MaterialType == ArmorComponent.ArmorMaterialTypes.Plate)
-         {
-            if (StrikeType == StrikeType.Swing)
-            {
-               if (DamageType == DamageTypes.Cut) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_PLATE_jC9xR_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE_pS5zE_Value);
-            }
-
-            if (StrikeType == StrikeType.Thrust)
-            {
-               if (DamageType == DamageTypes.Pierce) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE_bH4zG_Value);
-               if (DamageType == DamageTypes.Blunt) return Runtime.UnseatImpactResistance.ResistanceBonus(loadedOptions, weaponForce, option.UnseatValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE_dU6xV_Value);
-            }
-         }
-
-         return weaponForce;
+            ArmorComponent.ArmorMaterialTypes.Cloth => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.TwoHandedMaceClothDto(), _weaponForce, StrikeType, DamageType),
+            ArmorComponent.ArmorMaterialTypes.Leather => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.TwoHandedMaceLeatherDto(), _weaponForce, StrikeType, DamageType),
+            ArmorComponent.ArmorMaterialTypes.Chainmail => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.TwoHandedMaceChainmailDto(), _weaponForce, StrikeType, DamageType),
+            ArmorComponent.ArmorMaterialTypes.Plate => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.TwoHandedMacePlateDto(), _weaponForce, StrikeType, DamageType),
+            _ => _weaponForce
+         };
       }
-
-      public int LeatherResistanceBonus() => throw new NotImplementedException();
-
-      public int LeatherSwingResistance() => throw new NotImplementedException();
-
-      public int LeatherThrustResistance() => throw new NotImplementedException();
-
-      public int PlateResistanceBonus() => throw new NotImplementedException();
-
-      public int PlateSwingResistance() => throw new NotImplementedException();
-
-      public int PlateThrustResistance() => throw new NotImplementedException();
    }
 }

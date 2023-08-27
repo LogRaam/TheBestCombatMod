@@ -14,21 +14,16 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
       public readonly DamageTypes DamageType;
       public readonly StrikeType StrikeType;
       public ArmorComponent.ArmorMaterialTypes MaterialType;
-      private readonly string[] _loadedOptions;
-      private readonly UnseatOptionReader _option;
       private int _weaponForce;
 
-      public Javelin(in string[] loadedOptions,
-                     in StrikeType strikeType,
+      public Javelin(in StrikeType strikeType,
                      in DamageTypes damageType,
                      in ArmorComponent.ArmorMaterialTypes materialType)
       {
-         _loadedOptions = loadedOptions;
          StrikeType = strikeType;
          DamageType = damageType;
          MaterialType = materialType;
          _weaponForce = Runtime.WeaponStaggerForceValue.Javelin;
-         _option = Runtime.Get.UnseatOptionReader;
       }
 
 
@@ -40,15 +35,14 @@ namespace TheBestCombatMod.Features.Unseat.Weapon
             MaterialType = ArmorComponent.ArmorMaterialTypes.Cloth;
          }
 
-         switch (MaterialType)
+         return MaterialType switch
          {
-            case ArmorComponent.ArmorMaterialTypes.Cloth: return Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinClothDto(), _weaponForce, StrikeType, DamageType);
-            case ArmorComponent.ArmorMaterialTypes.Leather: return Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinLeatherDto(), _weaponForce, StrikeType, DamageType);
-            case ArmorComponent.ArmorMaterialTypes.Chainmail: return Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinChainmailDto(), _weaponForce, StrikeType, DamageType);
-            case ArmorComponent.ArmorMaterialTypes.Plate: return Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinPlateDto(), _weaponForce, StrikeType, DamageType);
-         }
-
-         return _weaponForce;
+            ArmorComponent.ArmorMaterialTypes.Cloth => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinClothDto(), _weaponForce, StrikeType, DamageType),
+            ArmorComponent.ArmorMaterialTypes.Leather => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinLeatherDto(), _weaponForce, StrikeType, DamageType),
+            ArmorComponent.ArmorMaterialTypes.Chainmail => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinChainmailDto(), _weaponForce, StrikeType, DamageType),
+            ArmorComponent.ArmorMaterialTypes.Plate => Runtime.Get.ArmorMaterialUnseatResistance.ResistanceBonus(Runtime.Get.JavelinPlateDto(), _weaponForce, StrikeType, DamageType),
+            _ => _weaponForce
+         };
       }
    }
 }
