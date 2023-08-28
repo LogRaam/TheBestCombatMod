@@ -3,6 +3,7 @@
 #region
 
 using LogRaamConfiguration;
+using TaleWorlds.Core;
 
 #endregion
 
@@ -15,5 +16,6 @@ namespace TheBestCombatMod.Concept
       GlobalActivationValue GolbalActivationValues { get; }
       UnseatActivationValue UnseatActivationValues { get; }
       UnseatValue UnseatValues { get; }
+      int GetIntegerValueFor(in string[] LoadedOptions, DamageTypes damageType);
    }
 }

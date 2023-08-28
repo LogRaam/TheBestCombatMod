@@ -62,6 +62,7 @@ namespace TheBestCombatMod
       private UnseatOptionReader _unseatOptionReader;
       private WeaponStaggerForceValueConstructorParams _unseatOptionsDto;
       private CombatActionEffect _unseatProbability;
+      private UnseatProbabilityConstructorParams _unseatProbabilityParams;
       private ImpactResistanceOptions _unseatResistanceValue;
       private StaggerStrengthOptions _unseatStaggerStrengthOptions;
       private UnseatValue _unseatValue;
@@ -111,7 +112,7 @@ namespace TheBestCombatMod
 
       public CombatActionEffect CombatActionEffect
       {
-         get => _CombatActionEffect ??= new UnseatProbability(LoadedOptions);
+         get => _CombatActionEffect ??= new UnseatProbability(UnseatProbabilityParams);
          set => _CombatActionEffect = value;
       }
 
@@ -334,8 +335,22 @@ namespace TheBestCombatMod
 
       public CombatActionEffect UnseatProbability
       {
-         get => _unseatProbability ??= new UnseatProbability(LoadedOptions);
+         get => _unseatProbability ??= new UnseatProbability(UnseatProbabilityParams);
          set => _unseatProbability = value;
+      }
+
+      public UnseatProbabilityConstructorParams UnseatProbabilityParams
+      {
+         get => _unseatProbabilityParams ??= new UnseatProbabilityParams
+         {
+            LoadedOptions = LoadedOptions,
+            BodyHitProbability = BodyHitUnseatProbability,
+            BodyPartsVulnerabilityOptions = UnseatBodyPartsVulnerabilityOptions,
+            DefenseInfo = ProtectionInfo,
+            Reader = UnseatByBlowOptionsReader
+         };
+
+         set => _unseatProbabilityParams = value;
       }
 
       public ImpactResistanceOptions UnseatResistanceOptions

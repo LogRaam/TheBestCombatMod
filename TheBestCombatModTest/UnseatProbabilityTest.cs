@@ -10,6 +10,7 @@ using TheBestCombatMod;
 using TheBestCombatMod.Features;
 using TheBestCombatMod.Features.Options;
 using TheBestCombatMod.Features.Unseat;
+using TheBestCombatMod.Features.Unseat.Body;
 using TheBestCombatMod.Features.Unseat.Options;
 using TheBestCombatModTest.Substitutes;
 
@@ -24,7 +25,15 @@ namespace TheBestCombatModTest
       public void ForInertiaStrength_Test()
       {
          //Given
-         var sut = new UnseatProbability(Runtime.LoadedOptions.GetContent());
+         var loadedOptions = Runtime.Get.ConfigurationLoader.RetrieveConfigDetails(Runtime.Get.ConfigurationLoader.GetOptionFilePath());
+         var sut = new UnseatProbability(new UnseatProbabilityParams
+         {
+            LoadedOptions = loadedOptions,
+            DefenseInfo = new ProtectionInfo(),
+            Reader = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag()),
+            BodyHitProbability = new BodyHitUnseatProbability(),
+            BodyPartsVulnerabilityOptions = new UnseatBodyPartsVulnerabilityOptions(loadedOptions)
+         });
          var expectedResult = 16;
 
          //When
@@ -64,7 +73,15 @@ namespace TheBestCombatModTest
       public void GivenIHaveInertia_WhenAttackerIsOnHorseback_ThenValueIsMultipliedByOptionValue()
       {
          //Given
-         var sut = new UnseatProbability(Runtime.LoadedOptions.GetContent());
+         var loadedOptions = Runtime.LoadedOptions.GetContent();
+         var sut = new UnseatProbability(new UnseatProbabilityParams
+         {
+            LoadedOptions = loadedOptions,
+            DefenseInfo = new ProtectionInfo(),
+            Reader = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag()),
+            BodyHitProbability = new BodyHitUnseatProbability(),
+            BodyPartsVulnerabilityOptions = new UnseatBodyPartsVulnerabilityOptions(loadedOptions)
+         });
          var expectedResult = 33;
 
          //When

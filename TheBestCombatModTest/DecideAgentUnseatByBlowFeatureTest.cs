@@ -2,11 +2,16 @@
 
 #region
 
+using LogRaamConfiguration;
 using NUnit.Framework;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TheBestCombatMod;
+using TheBestCombatMod.Features;
+using TheBestCombatMod.Features.Options;
 using TheBestCombatMod.Features.Unseat;
+using TheBestCombatMod.Features.Unseat.Body;
+using TheBestCombatMod.Features.Unseat.Options;
 
 #endregion
 
@@ -20,8 +25,15 @@ namespace TheBestCombatModTest
       {
          //Given
          var loadedOptions = Runtime.LoadedOptions.GetContent();
-         var unseatProbability = new UnseatProbability(loadedOptions);
-         //var strikeProbability = new StrikeUnseatProbability();
+         var unseatProbability = new UnseatProbability(new UnseatProbabilityParams
+         {
+            LoadedOptions = loadedOptions,
+            DefenseInfo = new ProtectionInfo(),
+            Reader = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag()),
+            BodyHitProbability = new BodyHitUnseatProbability(),
+            BodyPartsVulnerabilityOptions = new UnseatBodyPartsVulnerabilityOptions(loadedOptions)
+         });
+
          var sut = new DecideAgentUnseatByBlowFeature();
 
 
@@ -124,7 +136,14 @@ namespace TheBestCombatModTest
       {
          //Given
          var loadedOptions = Runtime.LoadedOptions.GetContent();
-         var unseatProbability = new UnseatProbability(loadedOptions);
+         var unseatProbability = new UnseatProbability(new UnseatProbabilityParams
+         {
+            LoadedOptions = loadedOptions,
+            DefenseInfo = new ProtectionInfo(),
+            Reader = new UnseatByBlowOptionsReader(new DefaultOptionReader(), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag()),
+            BodyHitProbability = new BodyHitUnseatProbability(),
+            BodyPartsVulnerabilityOptions = new UnseatBodyPartsVulnerabilityOptions(loadedOptions)
+         });
          var sut = new DecideAgentUnseatByBlowFeature();
 
 
