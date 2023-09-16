@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -26,6 +26,8 @@ namespace TheBestCombatMod
       public static CombatActionEffect ImpactDismountChance { get; private set; }
       public static ImpactChanceOptions ImpactUnseatChanceValue { get; private set; }
       public static KnockDownStrengthOption KnockDownStrenghtValue { get; set; }
+      public static OptionReader KnockedDownByBlowOptionsReader { get; set; }
+      public static ImpactResistanceOptions KnockedDownImpactResistance { get; set; }
       public static OptionFileContent LoadedOptions { get; set; }
       public static ConfigurationLoader Loader { get; set; }
       public static StaggerStrengthOptions StaggerStrength { get; set; }
@@ -75,6 +77,7 @@ namespace TheBestCombatMod
          LoadedOptions = Get.Options;
          StaggerStrength = Get.UnseatStaggerStrengthOptions;
          UnseatImpactResistance = Get.UnseatResistanceOptions;
+         KnockedDownImpactResistance = Get.KnockedDownImpactResistance;
          UnseatBodyPartsVulnerabilityOptions = Get.UnseatBodyPartsVulnerabilityOptions;
          if (LoadedOptions.GetContent().Length > 0) ImpactUnseatChanceValue = Get.ImpactUnseatChanceOptions;
          DefenseInfo = Get.DefenseInfo;

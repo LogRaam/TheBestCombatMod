@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -9,13 +9,13 @@ using TaleWorlds.Core;
 using TheBestCombatMod.Concept;
 using TheBestCombatMod.Features;
 using TheBestCombatMod.Features.KnockedDown;
+using TheBestCombatMod.Features.KnockedDown.Body;
 using TheBestCombatMod.Features.KnockedDown.Options;
 using TheBestCombatMod.Features.Options;
 using TheBestCombatMod.Features.Unseat;
-using TheBestCombatMod.Features.Unseat.Armor;
 using TheBestCombatMod.Features.Unseat.Body;
 using TheBestCombatMod.Features.Unseat.Options;
-using TheBestCombatMod.Features.Unseat.Weapon;
+using TheBestCombatMod.Features.Weapon;
 
 #endregion
 
@@ -26,8 +26,10 @@ namespace TheBestCombatMod
       private BodyPart _abdomen;
       private KnockedDownFeature _agentKnockedDownByBlow;
       private ArmorResistance _armorMaterialUnseatResistance;
+      private ArmorResistance _armorResistance;
       private BodyPart _arms;
       private AttackerOptions _attackerOptions;
+      private BodyHitProbability _bodyHitKnockedDownProbability;
       private BodyHitProbability _bodyHitUnseatProbability;
       private BodyPart _chest;
       private CombatActionEffect _CombatActionEffect;
@@ -41,12 +43,23 @@ namespace TheBestCombatMod
       private BodyPart _head;
       private ImpactChanceOptions _impactUnseatChanceOptions;
       private ImpactUnseatChanceValueConstructorParams _impactUnseatChanceValue_params;
-      private UnseatConfigConstructorParams _knockDownStrenght_params;
+      private KnockedDownConfigConstructorParams _knockDownStrenght_params;
       private KnockDownStrengthOption _knockDownStrengthOption;
+      private BodyPart _knockedDownAbdomen;
       private KnockedDownActivationValue _knockedDownActivationValues;
+      private BodyPart _knockedDownArms;
+      private BodyPartsVulnerabilityOptions _knockedDownBodyPartVulnerabilityOptions;
       private KnockedDownByBlowConfiguration _knockedDownByBlowConfig;
-      private KnockedDownByBlowConfigurationConstructorParams _knockedDownByBlowConfigurationConstructorParams;
+      private KnockedDownByBlowConfigurationConstructorParams _knockedDownByBlowConfigurationConstructor_params;
+      private KnockedDownOptionReader _knockedDownByBlowOptionReader;
+      private BodyPart _knockedDownChest;
+      private BodyPart _knockedDownHead;
+      private ImpactResistanceOptions _knockedDownImpactResistanceValue;
+      private BodyPart _knockedDownLegs;
+      private BodyPart _knockedDownNeck;
       private KnockedDownProbability _knockedDownProbability;
+      private KnockedDownProbabilityConstructorParams _knockedDownProbabilityConstructor_params;
+      private BodyPart _knockedDownShoulders;
       private KnockedDownValue _knockedDownValues;
       private BodyPart _legs;
       private string[] _loadedOptions = Array.Empty<string>();
@@ -60,13 +73,19 @@ namespace TheBestCombatMod
       private UnseatActivationValue _unseatActivationRefTag;
       private BodyPartsVulnerabilityOptions _unseatBodyPartsVulnerabilityOptions;
       private UnseatOptionReader _unseatOptionReader;
-      private WeaponStaggerForceValueConstructorParams _unseatOptionsDto;
+      private WeaponStaggerForceValueConstructorParams _unseatOptions_params;
       private CombatActionEffect _unseatProbability;
-      private UnseatProbabilityConstructorParams _unseatProbabilityParams;
+      private UnseatProbabilityConstructorParams _unseatProbability_params;
       private ImpactResistanceOptions _unseatResistanceValue;
       private StaggerStrengthOptions _unseatStaggerStrengthOptions;
       private UnseatValue _unseatValue;
       private WeaponStaggerForce _weaponStaggerForceValue;
+
+      public BodyPart AbdomenKnockedDownProbability
+      {
+         get => _knockedDownAbdomen ??= new AbdomenKnockedDownProbability();
+         set => _knockedDownAbdomen = value;
+      }
 
       public BodyPart AbdomenUnseatProbability
       {
@@ -74,10 +93,18 @@ namespace TheBestCombatMod
          set => _abdomen = value;
       }
 
-      public ArmorResistance ArmorMaterialUnseatResistance
+
+      public ArmorResistance ArmorMaterialResistance
       {
-         get => _armorMaterialUnseatResistance ??= new ArmorMaterialUnseatResistance(LoadedOptions);
-         set => _armorMaterialUnseatResistance = value;
+         get => _armorResistance ??= new ArmorMaterialResistance(LoadedOptions);
+         set => _armorResistance = value;
+      }
+
+
+      public BodyPart ArmsKnockedDownProbability
+      {
+         get => _knockedDownArms ??= new ArmsKnockedDownProbability();
+         set => _knockedDownArms = value;
       }
 
       public BodyPart ArmsUnseatProbability
@@ -98,10 +125,28 @@ namespace TheBestCombatMod
          set => _attackerOptions = value;
       }
 
+      public BodyHitProbability BodyHitKnockedDownProbability
+      {
+         get => _bodyHitKnockedDownProbability ??= new BodyHitKnockedDownProbability();
+         set => _bodyHitKnockedDownProbability = value;
+      }
+
       public BodyHitProbability BodyHitUnseatProbability
       {
          get => _bodyHitUnseatProbability ??= new BodyHitUnseatProbability();
          set => _bodyHitUnseatProbability = value;
+      }
+
+      public BodyPartsVulnerabilityOptions BodyPartVulnerabilityOptions
+      {
+         get => _knockedDownBodyPartVulnerabilityOptions ??= new KnockedDownBodyPartVulnerabilityOptions(LoadedOptions);
+         set => _knockedDownBodyPartVulnerabilityOptions = value;
+      }
+
+      public BodyPart ChestKnockedDownProbability
+      {
+         get => _knockedDownChest ??= new ChestKnockedDownProbability();
+         set => _knockedDownChest = value;
       }
 
       public BodyPart ChestUnseatProbability
@@ -112,7 +157,7 @@ namespace TheBestCombatMod
 
       public CombatActionEffect CombatActionEffect
       {
-         get => _CombatActionEffect ??= new UnseatProbability(UnseatProbabilityParams);
+         get => _CombatActionEffect ??= new UnseatProbability(UnseatProbability_params);
          set => _CombatActionEffect = value;
       }
 
@@ -140,12 +185,6 @@ namespace TheBestCombatMod
          set => _agentKnockedDownByBlow = value;
       }
 
-      public OptionReader DefaultOptionReader
-      {
-         get => _defaultOptionReader ??= new DefaultOptionReader();
-         set => _defaultOptionReader = value;
-      }
-
       public SituationalDefenseInfo DefenseInfo
       {
          get => _situationalDefenseInfo ??= new ProtectionInfo();
@@ -170,6 +209,12 @@ namespace TheBestCombatMod
          set => _globalValueRefTag = value;
       }
 
+      public BodyPart HeadKnockedDownProbability
+      {
+         get => _knockedDownHead ??= new HeadKnockedDownProbability();
+         set => _knockedDownHead = value;
+      }
+
       public BodyPart HeadUnseatProbability
       {
          get => _head ??= new HeadUnseatProbability();
@@ -189,13 +234,13 @@ namespace TheBestCombatMod
 
       public ImpactUnseatChanceValueConstructorParams ImpactUnseatChanceValue_params
       {
-         get => _impactUnseatChanceValue_params ??= new ImpactUnseatChanceValueParams(LoadedOptions, ConfigurationLoader, UnseatByBlowOptionsReader, UnseatStaggerStrengthOptions);
+         get => _impactUnseatChanceValue_params ??= new ImpactUnseatChanceValue_params(LoadedOptions, ConfigurationLoader, UnseatByBlowOptionsReader, UnseatStaggerStrengthOptions);
          set => _impactUnseatChanceValue_params = value;
       }
 
-      public UnseatConfigConstructorParams KnockDownStrenght_params
+      public KnockedDownConfigConstructorParams KnockDownStrenght_params
       {
-         get => _knockDownStrenght_params ??= new UnseatConfigParams(LoadedOptions, ConfigurationLoader, KnockedDownValues);
+         get => _knockDownStrenght_params ??= new KnockedDownConfig_params(LoadedOptions, ConfigurationLoader, KnockedDownValues);
          set => _knockDownStrenght_params = value;
       }
 
@@ -219,35 +264,74 @@ namespace TheBestCombatMod
 
       public KnockedDownByBlowConfiguration KnockedDownByBlowConfiguration
       {
-         get => _knockedDownByBlowConfig ??= new KnockedDownByBlowConfiguration(KnockedDownByBlowConfigurationParams);
+         get => _knockedDownByBlowConfig ??= new KnockedDownByBlowConfiguration(KnockedDownByBlowConfiguration_params);
          set => _knockedDownByBlowConfig = value;
       }
 
-      public KnockedDownByBlowConfigurationConstructorParams KnockedDownByBlowConfigurationParams
+      public KnockedDownByBlowConfigurationConstructorParams KnockedDownByBlowConfiguration_params
       {
-         get => _knockedDownByBlowConfigurationConstructorParams ??= new KnockedDownByBlowConfigurationParams(
-            DefaultOptionReader,
+         get => _knockedDownByBlowConfigurationConstructor_params ??= new KnockedDownByBlowConfiguration_params(
+            /*DefaultOptionReader(),*/
             KnockedDownActivationValues,
             KnockedDownValues,
             GlobalActivationValues,
             GlobalValues,
             ConfigurationLoader,
-            UnseatImpactResistanceValue,
-            UnseatStaggerStrengthOptions
+            UnseatImpactResistanceValue, //todo: Unseat?
+            UnseatStaggerStrengthOptions,
+            KnockDownStrengthOption
          );
-         set => _knockedDownByBlowConfigurationConstructorParams = value;
+         set => _knockedDownByBlowConfigurationConstructor_params = value;
+      }
+
+      public KnockedDownOptionReader KnockedDownByBlowOptionReader
+      {
+         //todo:KnockedDownImpactResistanceValue may be the wrong class
+         get => _knockedDownByBlowOptionReader ??= new KnockedDownOptionsReader(DefaultOptionReader(), KnockedDownActivationValues, KnockedDownValues, GlobalActivationValues, GlobalValues);
+         set => _knockedDownByBlowOptionReader = value;
+      }
+
+      public ImpactResistanceOptions KnockedDownImpactResistance
+      {
+         get
+         {
+            if (LoadedOptions.Length > 0) _knockedDownImpactResistanceValue ??= new KnockedDownImpactResistanceValue(LoadedOptions);
+
+            return _knockedDownImpactResistanceValue;
+         }
+         set => _knockedDownImpactResistanceValue = value;
       }
 
       public KnockedDownProbability KnockedDownProbability
       {
-         get => _knockedDownProbability ??= new KnockedDownProbability();
+         get => _knockedDownProbability ??= new KnockedDownProbability(KnockedDownProbability_params);
          set => _knockedDownProbability = value;
+      }
+
+      public KnockedDownProbabilityConstructorParams KnockedDownProbability_params
+      {
+         get => _knockedDownProbabilityConstructor_params ??= new KnockedDownProbability_params
+         {
+            LoadedOptions = LoadedOptions,
+            KnockedDownByBlowConfiguration = KnockedDownByBlowConfiguration,
+            DefenseInfo = DefenseInfo,
+            BodyHitProbability = BodyHitKnockedDownProbability,
+            BodyPartsVulnerabilityOptions = BodyPartVulnerabilityOptions,
+            KnockedDownOptionReader = KnockedDownByBlowOptionReader
+         };
+         set => _knockedDownProbabilityConstructor_params = value;
       }
 
       public KnockedDownValue KnockedDownValues
       {
-         get => _knockedDownValues ??= new KnockedDownRefTag();
+         get => _knockedDownValues ??= new KnockedDownValuesRefTag();
          set => _knockedDownValues = value;
+      }
+
+      public BodyPart LegsKnockedDownProbability
+      {
+         get => _knockedDownLegs ??= new LegsKnockedDownProbability();
+         set => _knockedDownLegs = value;
       }
 
       public BodyPart LegsUnseatProbability
@@ -260,6 +344,12 @@ namespace TheBestCombatMod
       {
          get => _loadedOptions = ConfigurationLoader.RetrieveConfigDetails(ConfigurationLoader.GetOptionFilePath());
          set => _loadedOptions = value;
+      }
+
+      public BodyPart NeckKnockedDownProbability
+      {
+         get => _knockedDownNeck ??= new NeckKnockedDownProbability();
+         set => _knockedDownNeck = value;
       }
 
       public BodyPart NeckUnseatProbability
@@ -284,6 +374,12 @@ namespace TheBestCombatMod
       {
          get => _random ??= new MBFastRandom();
          set => _random = value;
+      }
+
+      public BodyPart ShouldersKnockedDownProbability
+      {
+         get => _knockedDownShoulders ??= new ShouldersKnockedDownProbability();
+         set => _knockedDownShoulders = value;
       }
 
       public BodyPart ShouldersUnseatProbability
@@ -317,7 +413,7 @@ namespace TheBestCombatMod
 
       public UnseatOptionReader UnseatByBlowOptionsReader
       {
-         get => _unseatOptionReader ??= new UnseatByBlowOptionsReader(DefaultOptionReader, UnseatActivationValues, UnseatValues, GlobalActivationValues, GlobalValues);
+         get => _unseatOptionReader ??= new UnseatByBlowOptionsReader(DefaultOptionReader(), UnseatActivationValues, UnseatValues, GlobalActivationValues, GlobalValues);
          set => _unseatOptionReader = value;
       }
 
@@ -335,13 +431,13 @@ namespace TheBestCombatMod
 
       public CombatActionEffect UnseatProbability
       {
-         get => _unseatProbability ??= new UnseatProbability(UnseatProbabilityParams);
+         get => _unseatProbability ??= new UnseatProbability(UnseatProbability_params);
          set => _unseatProbability = value;
       }
 
-      public UnseatProbabilityConstructorParams UnseatProbabilityParams
+      public UnseatProbabilityConstructorParams UnseatProbability_params
       {
-         get => _unseatProbabilityParams ??= new UnseatProbabilityParams
+         get => _unseatProbability_params ??= new UnseatProbability_params
          {
             LoadedOptions = LoadedOptions,
             BodyHitProbability = BodyHitUnseatProbability,
@@ -350,7 +446,7 @@ namespace TheBestCombatMod
             Reader = UnseatByBlowOptionsReader
          };
 
-         set => _unseatProbabilityParams = value;
+         set => _unseatProbability_params = value;
       }
 
       public ImpactResistanceOptions UnseatResistanceOptions
@@ -405,13 +501,30 @@ namespace TheBestCombatMod
 
       public WeaponStaggerForceValueConstructorParams WeaponStaggerForceValue_params
       {
-         get => _unseatOptionsDto ??= new WeaponStaggerForceValueParams(LoadedOptions, UnseatByBlowOptionsReader);
-         set => _unseatOptionsDto = value;
+         get => _unseatOptions_params ??= new WeaponStaggerForceValue_params(LoadedOptions, UnseatByBlowOptionsReader);
+         set => _unseatOptions_params = value;
       }
 
       public WeaponType Dagger(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Dagger(in strikeType, in damageType, in materialType);
+      public AttackType DaggerChainmailKnockedDownDto() => throw new NotImplementedException();
 
-      public AttackType DaggerChainmailDto()
+
+      /*
+      public AttackType DaggerChainmailKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = Dagger(StrikeType.Swing, DamageTypes.Blunt, ArmorComponent.ArmorMaterialTypes.Chainmail) //KnockedDownByBlowOptionReader.KnockedDownValues.GetValuesFor(WeaponClass.Dagger, AttackMovement.SWING, DamageTypes.Blunt, ArmorComponent.ArmorMaterialTypes.Chainmail), // .DAGGER_SWING_BLUNT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_SWING_CUT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_BLUNT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_PIERCE_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+      */
+
+      public AttackType DaggerChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -424,7 +537,20 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType DaggerClothDto()
+      public AttackType DaggerClothKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_SWING_BLUNT_AGAINST_CLOTH_0ZV6V_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_SWING_CUT_AGAINST_CLOTH_UbH0U_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_BLUNT_AGAINST_CLOTH_54v8T_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_PIERCE_AGAINST_CLOTH_155we_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      public AttackType DaggerClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -437,7 +563,24 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType DaggerLeatherDto()
+      public AttackType DaggerLeatherKnockedDownDto() => throw new NotImplementedException();
+
+      /*
+      public AttackType DaggerLeatherKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_SWING_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_SWING_CUT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_PIERCE_AGAINST_LEATHER__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+      */
+
+      public AttackType DaggerLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -450,7 +593,25 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType DaggerPlateDto()
+      public AttackType DaggerPlateKnockedDownDto() => throw new NotImplementedException();
+
+      /*
+      public AttackType DaggerPlateKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_SWING_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_SWING_CUT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.DAGGER_THRUST_PIERCE_AGAINST_PLATE__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      */
+
+      public AttackType DaggerPlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -463,9 +624,30 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public WeaponType Javelin(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Javelin(in strikeType, in damageType, in materialType);
+      public OptionReader DefaultOptionReader() => new DefaultOptionReader();
 
-      public AttackType JavelinChainmailDto()
+      public WeaponType Javelin(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Javelin(in strikeType, in damageType, in materialType);
+      public AttackType JavelinChainmailKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType JavelinChainmailKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_BLUNT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_CUT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_BLUNT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_PIERCE_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+
+      public AttackType JavelinChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -478,7 +660,20 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType JavelinClothDto()
+      public AttackType JavelinClothKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_BLUNT_AGAINST_CLOTH_yfRpp_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_CUT_AGAINST_CLOTH_q7iqc_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_BLUNT_AGAINST_CLOTH_g5MD1_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_PIERCE_AGAINST_CLOTH_ztAYD_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      public AttackType JavelinClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -491,7 +686,26 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType JavelinLeatherDto()
+      public AttackType JavelinLeatherKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType JavelinLeatherKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_CUT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_PIERCE_AGAINST_LEATHER__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+      public AttackType JavelinLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -504,7 +718,26 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType JavelinPlateDto()
+      public AttackType JavelinPlateKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType JavelinPlateKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_SWING_CUT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.JAVELIN_THRUST_PIERCE_AGAINST_PLATE__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+      public AttackType JavelinPlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -519,7 +752,20 @@ namespace TheBestCombatMod
 
       public WeaponType OneHandedAxe(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedAxe(in strikeType, in damageType, in materialType);
 
-      public AttackType OneHandedAxeChainmailDto()
+      public AttackType OneHandedAxeChainmailKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_CHAINMAIL_fIwtn_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_CHAINMAIL_o3hJa_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_CHAINMAIL_4D4tg_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_CHAINMAIL_BCKTm_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      public AttackType OneHandedAxeChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -532,7 +778,20 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedAxeClothDto()
+      public AttackType OneHandedAxeClothKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_CLOTH_xiBqb_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_CLOTH_4dfIj_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_CLOTH_NCHfy_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_CLOTH_7bEDm_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      public AttackType OneHandedAxeClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -545,7 +804,20 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedAxeLeatherDto()
+      public AttackType OneHandedAxeLeatherKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_LEATHER_oTezN_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_LEATHER_eB5NV_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_LEATHER_efD8x_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_LEATHER_f6gV5_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      public AttackType OneHandedAxeLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -558,7 +830,20 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedAxePlateDto()
+      public AttackType OneHandedAxePlateKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_BLUNT_AGAINST_PLATE_tYoRa_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_SWING_CUT_AGAINST_PLATE_gQosN_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_BLUNT_AGAINST_PLATE_8v6eF_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_AXE_THRUST_PIERCE_AGAINST_PLATE_jfxkn_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      public AttackType OneHandedAxePlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -571,9 +856,26 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public WeaponType OneHandedMace(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedMace(in strikeType, in damageType, in materialType);
+      public AttackType OneHandedMaceChainmailKnockedDownDto() => throw new NotImplementedException();
 
-      public AttackType OneHandedMaceChainmailDto()
+
+      /*
+      public AttackType OneHandedMaceChainmailKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_CHAINMAIL__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+      public AttackType OneHandedMaceChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -586,7 +888,27 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedMaceClothDto()
+      public AttackType OneHandedMaceClothKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType OneHandedMaceClothKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+
+      public AttackType OneHandedMaceClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -599,7 +921,26 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedMaceLeatherDto()
+      public AttackType OneHandedMaceLeatherKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType OneHandedMaceLeatherKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_LEATHER__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+      public AttackType OneHandedMaceLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -612,7 +953,26 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedMacePlateDto()
+      public AttackType OneHandedMacePlateKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType OneHandedMacePlateKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_SWING_CUT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.ONE_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+      public AttackType OneHandedMacePlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -627,7 +987,7 @@ namespace TheBestCombatMod
 
       public WeaponType OneHandedPolearm(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedPolearm(in strikeType, in damageType, in materialType);
 
-      public AttackType OneHandedPolearmChainmailDto()
+      public AttackType OneHandedPolearmChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -640,7 +1000,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedPolearmClothDto()
+      public AttackType OneHandedPolearmClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -653,7 +1013,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedPolearmLeatherDto()
+      public AttackType OneHandedPolearmLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -666,7 +1026,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedPolearmPlateDto()
+      public AttackType OneHandedPolearmPlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -681,7 +1041,7 @@ namespace TheBestCombatMod
 
       public WeaponType OneHandedSword(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedSword(in strikeType, in damageType, in materialType);
 
-      public AttackType OneHandedSwordChainmailDto()
+      public AttackType OneHandedSwordChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -694,7 +1054,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedSwordClothDto()
+      public AttackType OneHandedSwordClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -707,7 +1067,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedSwordLeatherDto()
+      public AttackType OneHandedSwordLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -720,7 +1080,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType OneHandedSwordPlateDto()
+      public AttackType OneHandedSwordPlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -732,6 +1092,8 @@ namespace TheBestCombatMod
 
          return result;
       }
+
+      public WeaponType OneHandedUnseatMace(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new OneHandedMace(in strikeType, in damageType, in materialType);
 
 
       public OptionFileContent OptionFileContent(ConfigurationLoader loader)
@@ -746,7 +1108,7 @@ namespace TheBestCombatMod
       public WeaponType Pick(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Pick(in strikeType, in damageType, in materialType);
 
 
-      public AttackType PickChainmailDto()
+      public AttackType PickChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -759,7 +1121,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType PickClothDto()
+      public AttackType PickClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -772,7 +1134,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType PickLeatherDto()
+      public AttackType PickLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -785,7 +1147,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType PickPlateDto()
+      public AttackType PickPlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -800,7 +1162,7 @@ namespace TheBestCombatMod
 
       public WeaponType Stone(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new Stone(in strikeType, in damageType, in materialType);
 
-      public AttackType StoneChainmailDto()
+      public AttackType StoneChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -813,7 +1175,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType StoneClothDto()
+      public AttackType StoneClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -826,7 +1188,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType StoneLeatherDto()
+      public AttackType StoneLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -839,7 +1201,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType StonePlateDto()
+      public AttackType StonePlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -854,7 +1216,7 @@ namespace TheBestCombatMod
 
       public WeaponType TwoHandedAxe(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new TwoHandedAxe(in strikeType, in damageType, in materialType);
 
-      public AttackType TwoHandedAxeChainmailDto()
+      public AttackType TwoHandedAxeChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -867,7 +1229,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedAxeClothDto()
+      public AttackType TwoHandedAxeClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -880,7 +1242,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedAxeLeatherDto()
+      public AttackType TwoHandedAxeLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -893,7 +1255,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedAxePlateDto()
+      public AttackType TwoHandedAxePlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -908,7 +1270,21 @@ namespace TheBestCombatMod
 
       public WeaponType TwoHandedMace(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new TwoHandedMace(in strikeType, in damageType, in materialType);
 
-      public AttackType TwoHandedMaceChainmailDto()
+      public AttackType TwoHandedMaceChainmailKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_CHAINMAIL_G8aSx_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_CHAINMAIL_N4bTy_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_CHAINMAIL_L5zRz_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_CHAINMAIL_S2yQy_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+
+      public AttackType TwoHandedMaceChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -921,7 +1297,20 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedMaceClothDto()
+      public AttackType TwoHandedMaceClothKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE_K6eWy_KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_PLATE_H9fXz_KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE_M3dVx_KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE_T7cUz_KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+      public AttackType TwoHandedMaceClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -934,7 +1323,26 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedMaceLeatherDto()
+      public AttackType TwoHandedMaceLeatherKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType TwoHandedMaceLeatherKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_LEATHER__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_LEATHER__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+      public AttackType TwoHandedMaceLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -947,7 +1355,27 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedMacePlateDto()
+      public AttackType TwoHandedMacePlateKnockedDownDto() => throw new NotImplementedException();
+
+
+      /*
+      public AttackType TwoHandedMacePlateKnockedDownDto()
+      {
+         var result = new AttackTypeDto
+         {
+            Swing_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Swing_Cut = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_SWING_CUT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Blunt = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_BLUNT_AGAINST_PLATE__KNOCKEDDOWN_Value,
+            Thrust_Pierce = KnockedDownByBlowOptionReader.KnockedDownValues.TWO_HANDED_MACE_THRUST_PIERCE_AGAINST_PLATE__KNOCKEDDOWN_Value
+         };
+
+         return result;
+      }
+
+        */
+
+
+      public AttackType TwoHandedMacePlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -962,7 +1390,7 @@ namespace TheBestCombatMod
 
       public WeaponType TwoHandedPolearm(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new TwoHandedPolearm(in strikeType, in damageType, in materialType);
 
-      public AttackType TwoHandedPolearmChainmailDto()
+      public AttackType TwoHandedPolearmChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -975,7 +1403,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedPolearmClothDto()
+      public AttackType TwoHandedPolearmClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -988,7 +1416,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedPolearmLeatherDto()
+      public AttackType TwoHandedPolearmLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -1001,7 +1429,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedPolearmPlateDto()
+      public AttackType TwoHandedPolearmPlateUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -1016,7 +1444,7 @@ namespace TheBestCombatMod
 
       public WeaponType TwoHandedSword(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType) => new TwoHandedSword(in strikeType, in damageType, in materialType);
 
-      public AttackType TwoHandedSwordChainmailDto()
+      public AttackType TwoHandedSwordChainmailUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -1029,7 +1457,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedSwordClothDto()
+      public AttackType TwoHandedSwordClothUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -1042,7 +1470,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedSwordLeatherDto()
+      public AttackType TwoHandedSwordLeatherUnseatDto()
       {
          var result = new AttackTypeDto
          {
@@ -1055,7 +1483,7 @@ namespace TheBestCombatMod
          return result;
       }
 
-      public AttackType TwoHandedSwordPlateDto()
+      public AttackType TwoHandedSwordPlateUnseatDto()
       {
          var result = new AttackTypeDto
          {

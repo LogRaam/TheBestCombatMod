@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 13/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -25,7 +25,7 @@ namespace TheBestCombatModTest
       {
          //Given
          var loadedOptions = Runtime.LoadedOptions.GetContent();
-         var unseatProbability = new UnseatProbability(new UnseatProbabilityParams
+         var unseatProbability = new UnseatProbability(new UnseatProbability_params
          {
             LoadedOptions = loadedOptions,
             DefenseInfo = new ProtectionInfo(),
@@ -136,7 +136,7 @@ namespace TheBestCombatModTest
       {
          //Given
          var loadedOptions = Runtime.LoadedOptions.GetContent();
-         var unseatProbability = new UnseatProbability(new UnseatProbabilityParams
+         var unseatProbability = new UnseatProbability(new UnseatProbability_params
          {
             LoadedOptions = loadedOptions,
             DefenseInfo = new ProtectionInfo(),

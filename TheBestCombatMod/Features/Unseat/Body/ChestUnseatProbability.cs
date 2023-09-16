@@ -1,7 +1,8 @@
-﻿// Code written by Gabriel Mailhot, 26/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
+using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TheBestCombatMod.Concept;
 
@@ -11,9 +12,9 @@ namespace TheBestCombatMod.Features.Unseat.Body
 {
    public class ChestUnseatProbability : BodyPart
    {
-      public int WhenHit(in string[] loadedOptions, DamageTypes typeOfDamage, StrikeType strike)
+      public int WhenHit(in string[] loadedOptions, DamageTypes typeOfDamage, StrikeType strike, OptionReader optionReader)
       {
-         var option = Runtime.Get.UnseatByBlowOptionsReader;
+         var option = (UnseatOptionReader) optionReader;
          switch (typeOfDamage)
          {
             case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.CHEST_CUT_SWINGING_sQmx7_Value);

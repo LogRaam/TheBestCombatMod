@@ -1,7 +1,8 @@
-﻿// Code written by Gabriel Mailhot, 27/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
+using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -11,6 +12,6 @@ namespace TheBestCombatMod.Concept
 {
    public interface BodyHitProbability
    {
-      int GetProbabilityFor(string[] loadedOptions, DamageTypes typeOfDamage, StrikeType strike, BoneBodyPartType bodyPart);
+      int GetProbabilityFor(string[] loadedOptions, DamageTypes typeOfDamage, StrikeType strike, BoneBodyPartType bodyPart, OptionReader optionReader);
    }
 }

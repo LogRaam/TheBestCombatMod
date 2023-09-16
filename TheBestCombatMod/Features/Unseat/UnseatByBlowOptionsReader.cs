@@ -1,10 +1,12 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
+using System;
 using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TheBestCombatMod.Concept;
+using TheBestCombatMod.Features.Unseat.Options;
 
 #endregion
 
@@ -27,7 +29,17 @@ namespace TheBestCombatMod.Features.Unseat
       public UnseatActivationValue UnseatActivationValues { get; }
       public UnseatValue UnseatValues { get; }
 
-      public int GetAlphaValueFor(in string[] content, string valueTag) => DefaultOptionReader.GetAlphaValueFor(content, valueTag);
+
+      public int GetAlphaValueFor(in string[] content, string valueTag)
+      {
+         var s = new ConfigLoader().RetrieveAlphaValueFrom(content, valueTag).ToLower();
+
+         var result = new UnseatImpactResistanceValue(content).Convert(s);
+
+         return result;
+      }
+
+      public int GetAlphaValueFor(in string[] loadedOptions, DamageTypes damageType) => throw new NotImplementedException();
 
       public float GetFloatValueFor(in string[] content, string valueTag) => DefaultOptionReader.GetFloatValueFor(content, valueTag);
 

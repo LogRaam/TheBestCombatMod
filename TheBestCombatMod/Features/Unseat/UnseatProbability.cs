@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -44,7 +44,7 @@ namespace TheBestCombatMod.Features.Unseat
       {
          if (!UnseatOptionReader.IsOptionActivated(LoadedOptions, UnseatOptionReader.UnseatActivationValues.ImpactDismountChanceForStrikeAgainstArmor_Active)) return 0;
 
-         var bonus = SituationalDefenseInfo.GetResistanceBonusFrom(LoadedOptions, attackerWeaponClass, strikeType, typeOfDamage, armorMaterialType);
+         var bonus = SituationalDefenseInfo.GetResistanceBonusFrom(LoadedOptions, attackerWeaponClass, strikeType, typeOfDamage, armorMaterialType, Feature.KnockedDown);
 
          return bonus;
       }
@@ -61,7 +61,7 @@ namespace TheBestCombatMod.Features.Unseat
          if (!UnseatOptionReader.IsOptionActivated(LoadedOptions, UnseatOptionReader.UnseatActivationValues.StrikeEffectOnBodyPart_Active)) return 0;
          if (bodyPart == BoneBodyPartType.None || typeOfDamage == DamageTypes.Invalid || strike == StrikeType.Invalid) return Runtime.StaggerStrength.None;
 
-         return BodyHitProbability.GetProbabilityFor(LoadedOptions, typeOfDamage, strike, bodyPart);
+         return BodyHitProbability.GetProbabilityFor(LoadedOptions, typeOfDamage, strike, bodyPart, UnseatOptionReader);
       }
 
       public float IfAttackerIsWoman(in bool attackerAgentIsFemale)
@@ -198,7 +198,7 @@ namespace TheBestCombatMod.Features.Unseat
    }
 
 
-   public class UnseatProbabilityParams : UnseatProbabilityConstructorParams
+   public class UnseatProbability_params : UnseatProbabilityConstructorParams
    {
       public BodyHitProbability BodyHitProbability { get; set; }
       public BodyPartsVulnerabilityOptions BodyPartsVulnerabilityOptions { get; set; }

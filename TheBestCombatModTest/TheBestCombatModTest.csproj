@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions, Version=6.11.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
@@ -71,7 +73,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Substitutes\TestFactory.cs" />
+    <Compile Include="FootmanKnockedDownByBlowFeatureTest.cs" />
+    <Compile Include="KnockedDownTests\AbdomenKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\ArmsKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\BodyHitKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\ChestKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\HeadKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\LegsKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\NeckKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\ShouldersKnockedDownProbabilityTest.cs" />
+    <Compile Include="KnockedDownTests\StaggerStrengthPercentageValue.cs" />
     <Compile Include="UnseatBodyPartsVulnerabilityOptionsTest.cs" />
     <Compile Include="Substitutes\ConfigLoaderSubstitute.cs" />
     <Compile Include="DecideAgentKnockedDownByBlowKnockedDownFeatureTest.cs" />

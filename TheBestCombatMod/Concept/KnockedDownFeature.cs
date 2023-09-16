@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -13,11 +13,18 @@ namespace TheBestCombatMod.Concept
    {
       int CalculateKnockedDownChances(
          in string[] loadedOptions,
-         Agent attackerAgent,
-         Agent victimAgent,
-         in Blow blow,
-         WeaponComponentData attackerWeapon,
-         in AttackCollisionData collisionData
+         bool attackerIsHuman,
+         bool attackerIsHero,
+         bool attackerIsSoldier,
+         float attackerHealth,
+         float attackerMaxHealth,
+         float victimHealth,
+         float victimMaxHealth,
+         StrikeType strikeType,
+         DamageTypes damageType,
+         BoneBodyPartType victimBodyPart,
+         WeaponClass attackerWeaponClass,
+         ArmorComponent.ArmorMaterialTypes armorMaterialType
       );
    }
 }

@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -57,7 +57,22 @@ namespace TheBestCombatMod.Features.KnockedDown
          }
 
 
-         var knockdown = Runtime.DecideAgentKnockedDownByBlowKnockedDown.CalculateKnockedDownChances(Runtime.LoadedOptions.GetContent(), attackerAgent, victimAgent, blow, attackerWeapon, collisionData);
+         var knockdown = Runtime.DecideAgentKnockedDownByBlowKnockedDown.CalculateKnockedDownChances(
+            Runtime.LoadedOptions.GetContent(),
+            attackerAgent.IsHuman,
+            attackerAgent.IsHero,
+            attackerAgent.Character.IsSoldier,
+            attackerAgent.Health,
+            attackerAgent.Character.MaxHitPoints(),
+            victimAgent.Health,
+            victimAgent.Character.MaxHitPoints(),
+            blow.StrikeType,
+            blow.DamageType,
+            blow.VictimBodyPart,
+            attackerWeapon.WeaponClass,
+            Runtime.Get.ProtectionInfo.GetArmorMaterialType(victimAgent, blow)
+         );
+
 
          if (Runtime.Get.Random.Next(1, 100) <= knockdown)
          {

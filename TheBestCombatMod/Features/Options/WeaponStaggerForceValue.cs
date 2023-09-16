@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -40,27 +40,27 @@ namespace TheBestCombatMod.Features.Options
       {
          if (_loadedOptions.Length == 0) return;
 
-         Dagger = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_Dagger_n1XdZ_Value);
-         Javelin = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_Javelin_Xsa8Z_Value);
-         Mace = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_Mace_gFe0e_Value);
-         OneHandedAxe = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_OneHandedAxe_4DlEy_Value);
-         OneHandedPolearm = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_OneHandedPolearm_7N5Ag_Value);
-         OneHandedSword = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_OneHandedSword_w5XQZ_Value);
-         Pick = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_Pick_vtQof_Value);
-         Stone = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_Stone_q0Ak2_Value);
-         ThrowingAxe = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_ThrowingAxe_GuSl7_Value);
-         ThrowingKnife = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_ThrowingKnife_5hKU8_Value);
-         TwoHandedAxe = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_TwoHandedAxe_nA05d_Value);
-         TwoHandedMace = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_TwoHandedMace_E78By_Value);
-         TwoHandedPolearm = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_TwoHandedPolearm_2SCK0_Value);
-         TwoHandedSword = _options.GetIntegerValueFor(_loadedOptions, _options.UnseatValues.Base_Stagger_Force_TwoHandedSword_cU7uE_Value);
+         Dagger = _options.GetIntegerValueFor(_loadedOptions, "(n1XdZ)");
+         Javelin = _options.GetIntegerValueFor(_loadedOptions, "(Xsa8Z)");
+         Mace = _options.GetIntegerValueFor(_loadedOptions, "(gFe0e)");
+         OneHandedAxe = _options.GetIntegerValueFor(_loadedOptions, "(4DlEy)");
+         OneHandedPolearm = _options.GetIntegerValueFor(_loadedOptions, "(7N5Ag)");
+         OneHandedSword = _options.GetIntegerValueFor(_loadedOptions, "(w5XQZ)");
+         Pick = _options.GetIntegerValueFor(_loadedOptions, "(vtQof)");
+         Stone = _options.GetIntegerValueFor(_loadedOptions, "(q0Ak2)");
+         ThrowingAxe = _options.GetIntegerValueFor(_loadedOptions, "(GuSl7)");
+         ThrowingKnife = _options.GetIntegerValueFor(_loadedOptions, "(5hKU8)");
+         TwoHandedAxe = _options.GetIntegerValueFor(_loadedOptions, "(nA05d)");
+         TwoHandedMace = _options.GetIntegerValueFor(_loadedOptions, "(E78By)");
+         TwoHandedPolearm = _options.GetIntegerValueFor(_loadedOptions, "(2SCK0)");
+         TwoHandedSword = _options.GetIntegerValueFor(_loadedOptions, "(cU7uE)");
       }
    }
 
 
-   public class WeaponStaggerForceValueParams : WeaponStaggerForceValueConstructorParams
+   public class WeaponStaggerForceValue_params : WeaponStaggerForceValueConstructorParams
    {
-      public WeaponStaggerForceValueParams(in string[] loadedOptions, in UnseatOptionReader reader)
+      public WeaponStaggerForceValue_params(in string[] loadedOptions, in UnseatOptionReader reader)
       {
          LoadedOptions = loadedOptions;
          UnseatOptionReader = reader;

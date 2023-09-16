@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -16,6 +16,7 @@ namespace TheBestCombatMod.Concept
       GlobalActivationValue GolbalActivationValues { get; }
       UnseatActivationValue UnseatActivationValues { get; }
       UnseatValue UnseatValues { get; }
+      int GetAlphaValueFor(in string[] loadedOptions, string unseatValuesAbdomenCutSwingingTRqGaValue);
       int GetIntegerValueFor(in string[] LoadedOptions, DamageTypes damageType);
    }
 }

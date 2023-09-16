@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 26/08/2023.
+﻿// Code written by Gabriel Mailhot, 30/08/2023.
 
 #region
 
@@ -6,7 +6,7 @@ using TheBestCombatMod.Concept;
 
 #endregion
 
-namespace TheBestCombatMod.Features.Unseat.Armor
+namespace TheBestCombatMod.Features
 {
    public class AttackTypeDto : AttackType
    {

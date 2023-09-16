@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -15,7 +15,7 @@ namespace TheBestCombatMod.Features.KnockedDown.Options
       private readonly KnockedDownValue _knockedDownValue;
       private readonly string[] _loadedOptions;
 
-      public KnockDownStrenghtValue(UnseatConfigConstructorParams parameters)
+      public KnockDownStrenghtValue(KnockedDownConfigConstructorParams parameters)
       {
          _loadedOptions = parameters.LoadedOptions;
          _configLoader = parameters.ConfigLoader;
@@ -61,11 +61,11 @@ namespace TheBestCombatMod.Features.KnockedDown.Options
    }
 
 
-   public class UnseatConfigParams : UnseatConfigConstructorParams
+   public class KnockedDownConfig_params : KnockedDownConfigConstructorParams
    {
-      public UnseatConfigParams(in string[] loadedOptions,
-                                in ConfigurationLoader configLoader,
-                                KnockedDownValue knockedDownValue)
+      public KnockedDownConfig_params(in string[] loadedOptions,
+                                      in ConfigurationLoader configLoader,
+                                      KnockedDownValue knockedDownValue)
       {
          ConfigLoader = configLoader;
          LoadedOptions = loadedOptions;
@@ -78,7 +78,7 @@ namespace TheBestCombatMod.Features.KnockedDown.Options
    }
 
 
-   public interface UnseatConfigConstructorParams
+   public interface KnockedDownConfigConstructorParams
    {
       ConfigurationLoader ConfigLoader { get; set; }
       KnockedDownValue KnockedDownValue { get; set; }

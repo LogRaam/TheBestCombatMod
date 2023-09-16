@@ -1,14 +1,12 @@
-﻿// Code written by Gabriel Mailhot, 26/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
-
-using TaleWorlds.Core;
-using TheBestCombatMod.Concept;
 
 #endregion
 
 namespace TheBestCombatMod.Features.Unseat.Armor
 {
+   /*
    public class ArmorMaterialUnseatResistance : ArmorResistance
    {
       private readonly string[] _loadedOptions;
@@ -28,7 +26,9 @@ namespace TheBestCombatMod.Features.Unseat.Armor
          };
       }
 
-      public int SwingResistance(in int weaponForce, in DamageTypes damageType, AttackType dto)
+      public int ResistanceBonus(string tag, int weaponForce, StrikeType strikeType, DamageTypes damageType) => Runtime.UnseatImpactResistance.ResistanceBonus(_loadedOptions, weaponForce, tag);
+
+      public int SwingResistance(in int weaponForce, in DamageTypes damageType, in AttackType dto)
       {
          return damageType switch
          {
@@ -38,7 +38,7 @@ namespace TheBestCombatMod.Features.Unseat.Armor
          };
       }
 
-      public int ThrustResistance(in int weaponForce, in DamageTypes damageType, AttackType dto)
+      public int ThrustResistance(in int weaponForce, in DamageTypes damageType, in AttackType dto)
       {
          return damageType switch
          {
@@ -48,4 +48,5 @@ namespace TheBestCombatMod.Features.Unseat.Armor
          };
       }
    }
+   */
 }

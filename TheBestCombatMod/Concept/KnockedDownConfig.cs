@@ -1,9 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 27/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 namespace TheBestCombatMod.Concept
 {
-   internal interface KnockedDownConfig : Configuration
+   public interface KnockedDownConfig : Configuration
    {
-      int GetKnockdownAlphaValueFor(in string[] loadedOptions, string valueTag);
+      KnockedDownActivationValue KnockedDownActivationValueTags { get; set; }
+      KnockedDownValue KnockedDownValueTags { get; set; }
    }
 }

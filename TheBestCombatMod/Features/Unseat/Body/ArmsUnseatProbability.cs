@@ -1,7 +1,8 @@
-﻿// Code written by Gabriel Mailhot, 26/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
+using LogRaamConfiguration;
 using TaleWorlds.Core;
 using TheBestCombatMod.Concept;
 
@@ -11,20 +12,22 @@ namespace TheBestCombatMod.Features.Unseat.Body
 {
    public class ArmsUnseatProbability : BodyPart
    {
-      public int WhenHit(in string[] loadedOptions, DamageTypes typeOfDamage, StrikeType strike)
+      public int WhenHit(in string[] loadedOptions, DamageTypes typeOfDamage, StrikeType strike, OptionReader optionReader)
       {
-         var option = Runtime.Get.UnseatByBlowOptionsReader;
-         switch (typeOfDamage)
-         {
-            case DamageTypes.Cut when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_CUT_SWINGING_eMIfX_Value);
-            case DamageTypes.Cut when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_CUT_THRUSTING_uHDMI_Value);
-            case DamageTypes.Pierce when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_PIERCE_SWINGING_ScPD3_Value);
-            case DamageTypes.Pierce when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_PIERCE_THRUSTING_7R3oW_Value);
-            case DamageTypes.Blunt when strike == StrikeType.Swing: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_BLUNT_SWINGING_zwGj0_Value);
-            case DamageTypes.Blunt when strike == StrikeType.Thrust: return option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_BLUNT_THRUSTING_E9s8D_Value);
-         }
+         var option = (UnseatOptionReader) optionReader;
 
-         return 0;
+         var result = typeOfDamage switch
+         {
+            DamageTypes.Cut when strike == StrikeType.Swing => option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_CUT_SWINGING_eMIfX_Value),
+            DamageTypes.Cut when strike == StrikeType.Thrust => option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_CUT_THRUSTING_uHDMI_Value),
+            DamageTypes.Pierce when strike == StrikeType.Swing => option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_PIERCE_SWINGING_ScPD3_Value),
+            DamageTypes.Pierce when strike == StrikeType.Thrust => option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_PIERCE_THRUSTING_7R3oW_Value),
+            DamageTypes.Blunt when strike == StrikeType.Swing => option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_BLUNT_SWINGING_zwGj0_Value),
+            DamageTypes.Blunt when strike == StrikeType.Thrust => option.GetAlphaValueFor(loadedOptions, option.UnseatValues.ARMS_BLUNT_THRUSTING_E9s8D_Value),
+            _ => 0
+         };
+
+         return result;
       }
    }
 }

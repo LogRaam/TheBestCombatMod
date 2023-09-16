@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -13,23 +13,23 @@ namespace TheBestCombatMod.Features.KnockedDown
    {
       public KnockedDownByBlowConfiguration(KnockedDownByBlowConfigurationConstructorParams parameters)
       {
-         DefaultOptionsReader = parameters.DefaultOptionReader;
+         //DefaultOptionsReader = parameters.DefaultOptionReader;
          GlobalUnseatActivationRefTag = parameters.GlobalActivTagValue;
          GlobalUnseatValueRefTag = parameters.GlobalValTag;
-         KnockedDownUnseatActiveTagValue = parameters.KnockedDownUnseatActiveTagValue;
-         KnockedDownUnseatValueTags = parameters.KnockedDownUnseatValueTag;
+         KnockedDownActiveTagValue = parameters.KnockedDownUnseatActiveTagValue;
+         KnockedDownValueTags = parameters.KnockedDownUnseatValueTag;
          Loader = parameters.ConfigurationLoader;
          UnseatImpactResistance = parameters.ImpactResistanceOptions;
          StaggerStrength = parameters.StaggerStrengthOptions;
          KnockDownStrengthOption = parameters.KnockDownStrengthOption;
       }
 
-      public OptionReader DefaultOptionsReader { get; set; }
+      //public OptionReader DefaultOptionsReader { get; set; }
       public GlobalActivationValue GlobalUnseatActivationRefTag { get; set; }
       public GlobalValueRefTag GlobalUnseatValueRefTag { get; set; }
       public KnockDownStrengthOption KnockDownStrengthOption { get; set; }
-      public KnockedDownActivationValue KnockedDownUnseatActiveTagValue { get; set; }
-      public KnockedDownValue KnockedDownUnseatValueTags { get; set; }
+      public KnockedDownActivationValue KnockedDownActiveTagValue { get; set; }
+      public KnockedDownValue KnockedDownValueTags { get; set; }
       public ConfigurationLoader Loader { get; set; }
       public StaggerStrengthOptions StaggerStrength { get; set; }
       public ImpactResistanceOptions UnseatImpactResistance { get; set; }
@@ -70,20 +70,19 @@ namespace TheBestCombatMod.Features.KnockedDown
    }
 
 
-   public class KnockedDownByBlowConfigurationParams : KnockedDownByBlowConfigurationConstructorParams
+   public class KnockedDownByBlowConfiguration_params : KnockedDownByBlowConfigurationConstructorParams
    {
-      public KnockedDownByBlowConfigurationParams(
-         OptionReader defaultOptionReader,
+      public KnockedDownByBlowConfiguration_params( /*OptionReader defaultOptionReader,*/
          KnockedDownActivationValue knockedDownUnseatActiveTagValue,
          KnockedDownValue knockedDownUnseatValueTag,
          GlobalActivationValue globalActivTagValue,
          GlobalValueRefTag globalValTag,
          ConfigurationLoader loader,
          ImpactResistanceOptions impactResistanceOptions,
-         StaggerStrengthOptions staggerStrengthOptions
-      )
+         StaggerStrengthOptions staggerStrengthOptions,
+         KnockDownStrengthOption knockDownStrengthOption)
       {
-         DefaultOptionReader = defaultOptionReader;
+         //DefaultOptionReader = defaultOptionReader;
          GlobalActivTagValue = globalActivTagValue;
          GlobalValTag = globalValTag;
          KnockedDownUnseatActiveTagValue = knockedDownUnseatActiveTagValue;
@@ -91,11 +90,10 @@ namespace TheBestCombatMod.Features.KnockedDown
          ConfigurationLoader = loader;
          ImpactResistanceOptions = impactResistanceOptions;
          StaggerStrengthOptions = staggerStrengthOptions;
+         KnockDownStrengthOption = knockDownStrengthOption;
       }
 
       public ConfigurationLoader ConfigurationLoader { get; set; }
-
-
       public OptionReader DefaultOptionReader { get; set; }
       public GlobalActivationValue GlobalActivTagValue { get; set; }
       public GlobalValueRefTag GlobalValTag { get; set; }

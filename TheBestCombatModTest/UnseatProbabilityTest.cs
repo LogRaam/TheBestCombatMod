@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 13/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -26,7 +26,7 @@ namespace TheBestCombatModTest
       {
          //Given
          var loadedOptions = Runtime.Get.ConfigurationLoader.RetrieveConfigDetails(Runtime.Get.ConfigurationLoader.GetOptionFilePath());
-         var sut = new UnseatProbability(new UnseatProbabilityParams
+         var sut = new UnseatProbability(new UnseatProbability_params
          {
             LoadedOptions = loadedOptions,
             DefenseInfo = new ProtectionInfo(),
@@ -49,7 +49,12 @@ namespace TheBestCombatModTest
          //Given
          var sut = new ProtectionInfo();
          var expectedResult = 34;
-         var option = new UnseatByBlowOptionsReader(new DefaultOptionReader(new UnseatImpactResistanceValue(Runtime.LoadedOptions.GetContent())), new UnseatActivationRefTag(), new UnseatValueRefTag(), new GlobalActivationRefTag(), new GlobalUnseatValueRefTag());
+         var option = new UnseatByBlowOptionsReader(
+            new DefaultOptionReader( /*new UnseatImpactResistanceValue(Runtime.LoadedOptions.GetContent())*/),
+            new UnseatActivationRefTag(),
+            new UnseatValueRefTag(),
+            new GlobalActivationRefTag(),
+            new GlobalUnseatValueRefTag());
          var loadedOptions = Runtime.LoadedOptions.GetContent();
 
          //When
@@ -58,7 +63,9 @@ namespace TheBestCombatModTest
             WeaponClass.Dagger,
             StrikeType.Swing,
             DamageTypes.Blunt,
-            ArmorComponent.ArmorMaterialTypes.Plate);
+            ArmorComponent.ArmorMaterialTypes.Plate,
+            Feature.Unseat
+         );
 
          var test2 = option.GetAlphaValueFor(Runtime.LoadedOptions.GetContent(), option.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_CLOTH_dH8xR_Value);
          var test3 = option.GetAlphaValueFor(Runtime.LoadedOptions.GetContent(), option.UnseatValues.TWO_HANDED_SWORD_SWING_BLUNT_AGAINST_PLATE_lH8xR_Value);
@@ -74,7 +81,7 @@ namespace TheBestCombatModTest
       {
          //Given
          var loadedOptions = Runtime.LoadedOptions.GetContent();
-         var sut = new UnseatProbability(new UnseatProbabilityParams
+         var sut = new UnseatProbability(new UnseatProbability_params
          {
             LoadedOptions = loadedOptions,
             DefenseInfo = new ProtectionInfo(),

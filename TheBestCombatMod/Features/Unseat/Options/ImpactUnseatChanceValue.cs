@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 24/08/2023.
+﻿// Code written by Gabriel Mailhot, 28/08/2023.
 
 #region
 
@@ -129,60 +129,60 @@ namespace TheBestCombatMod.Features.Unseat.Options
 
       private void LoadValues()
       {
-         HEAD_CUT_SWINGING_05zN2 = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_CUT_SWINGING_05zN2_Value));
-         HEAD_CUT_THRUSTING_IgazM = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_CUT_THRUSTING_IgazM_Value));
-         HEAD_BLUNT_SWINGING_8VPtS = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_BLUNT_SWINGING_8VPtS_Value));
-         HEAD_BLUNT_THRUSTING_UzQhf = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_BLUNT_THRUSTING_UzQhf_Value));
-         HEAD_PIERCE_SWINGING_JMWpz = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_PIERCE_SWINGING_JMWpz_Value));
-         HEAD_PIERCE_THRUSTING_pMa5J = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_PIERCE_THRUSTING_pMa5J_Value));
-         NECK_BLUNT_SWINGING_Z19yv = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_BLUNT_SWINGING_Z19yv_Value));
-         NECK_BLUNT_THRUSTING_yZEV1 = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_BLUNT_THRUSTING_yZEV1_Value));
-         NECK_CUT_SWINGING_OJ42D = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_CUT_SWINGING_OJ42D_Value));
-         NECK_CUT_THRUSTING_JDsUb = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_CUT_THRUSTING_JDsUb_Value));
-         NECK_PIERCE_SWINGING_16Tqb = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_PIERCE_SWINGING_16Tqb_Value));
-         NECK_PIERCE_THRUSTING_PwjyT = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_PIERCE_THRUSTING_PwjyT_Value));
-         CHEST_BLUNT_SWINGING_Ip0TE = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_BLUNT_SWINGING_Ip0TE_Value));
-         CHEST_BLUNT_THRUSTING_ktCEu = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_BLUNT_THRUSTING_ktCEu_Value));
-         CHEST_CUT_SWINGING_sQmx7 = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_CUT_SWINGING_sQmx7_Value));
-         CHEST_CUT_THRUSTING_dNomI = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_CUT_THRUSTING_dNomI_Value));
-         CHEST_PIERCE_SWINGING_6ssat = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_PIERCE_SWINGING_6ssat_Value));
-         CHEST_PIERCE_THRUSTING_ybixm = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_PIERCE_THRUSTING_ybixm_Value));
-         ABDOMEN_BLUNT_SWINGING_v2v6T = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_BLUNT_SWINGING_v2v6T_Value));
-         ABDOMEN_BLUNT_THRUSTING_6gLsx = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_BLUNT_THRUSTING_6gLsx_Value));
-         ABDOMEN_CUT_SWINGING_tRqGA = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_CUT_SWINGING_tRqGA_Value));
-         ABDOMEN_CUT_THRUSTING_eypTb = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_CUT_THRUSTING_eypTb_Value));
-         ABDOMEN_PIERCE_SWINGING_VTO6S = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_PIERCE_SWINGING_VTO6S_Value));
-         ABDOMEN_PIERCE_THRUSTING_suxMY = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_PIERCE_THRUSTING_suxMY_Value));
-         SHOULDERS_BLUNT_SWINGING_TplnH = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_BLUNT_SWINGING_TplnH_Value));
-         SHOULDERS_BLUNT_THRUSTING_gqk9L = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_BLUNT_THRUSTING_gqk9L_Value));
-         SHOULDERS_CUT_SWINGING_8yoXK = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_CUT_SWINGING_8yoXK_Value));
-         SHOULDERS_CUT_THRUSTING_2Y1ez = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_CUT_THRUSTING_2Y1ez_Value));
-         SHOULDERS_PIERCE_SWINGING_HoWbh = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_PIERCE_SWINGING_HoWbh_Value));
-         SHOULDERS_PIERCE_THRUSTING_UhpJO = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_PIERCE_THRUSTING_UhpJO_Value));
-         ARMS_BLUNT_SWINGING_zwGj0 = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_BLUNT_SWINGING_zwGj0_Value));
-         ARMS_BLUNT_THRUSTING_E9s8D = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_BLUNT_THRUSTING_E9s8D_Value));
-         ARMS_CUT_SWINGING_eMIfX = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_CUT_SWINGING_eMIfX_Value));
-         ARMS_CUT_THRUSTING_uHDMI = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_CUT_THRUSTING_uHDMI_Value));
-         ARMS_PIERCE_SWINGING_ScPD3 = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_PIERCE_SWINGING_ScPD3_Value));
-         ARMS_PIERCE_THRUSTING_7R3oW = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_PIERCE_THRUSTING_7R3oW_Value));
-         LEGS_BLUNT_SWINGING_JTLxV = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_BLUNT_SWINGING_JTLxV_Value));
-         LEGS_BLUNT_THRUSTING_awuSL = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_BLUNT_THRUSTING_awuSL_Value));
-         LEGS_CUT_SWINGING_xOKtK = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_CUT_SWINGING_xOKtK_Value));
-         LEGS_CUT_THRUSTING_hEsET = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_CUT_THRUSTING_hEsET_Value));
-         LEGS_PIERCE_SWINGING_6DD8t = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_PIERCE_SWINGING_6DD8t_Value));
-         LEGS_PIERCE_THRUSTING_NblKm = Runtime.StaggerStrength.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_PIERCE_THRUSTING_NblKm_Value));
+         HEAD_CUT_SWINGING_05zN2 = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_CUT_SWINGING_05zN2_Value));
+         HEAD_CUT_THRUSTING_IgazM = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_CUT_THRUSTING_IgazM_Value));
+         HEAD_BLUNT_SWINGING_8VPtS = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_BLUNT_SWINGING_8VPtS_Value));
+         HEAD_BLUNT_THRUSTING_UzQhf = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_BLUNT_THRUSTING_UzQhf_Value));
+         HEAD_PIERCE_SWINGING_JMWpz = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_PIERCE_SWINGING_JMWpz_Value));
+         HEAD_PIERCE_THRUSTING_pMa5J = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.HEAD_PIERCE_THRUSTING_pMa5J_Value));
+         NECK_BLUNT_SWINGING_Z19yv = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_BLUNT_SWINGING_Z19yv_Value));
+         NECK_BLUNT_THRUSTING_yZEV1 = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_BLUNT_THRUSTING_yZEV1_Value));
+         NECK_CUT_SWINGING_OJ42D = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_CUT_SWINGING_OJ42D_Value));
+         NECK_CUT_THRUSTING_JDsUb = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_CUT_THRUSTING_JDsUb_Value));
+         NECK_PIERCE_SWINGING_16Tqb = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_PIERCE_SWINGING_16Tqb_Value));
+         NECK_PIERCE_THRUSTING_PwjyT = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.NECK_PIERCE_THRUSTING_PwjyT_Value));
+         CHEST_BLUNT_SWINGING_Ip0TE = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_BLUNT_SWINGING_Ip0TE_Value));
+         CHEST_BLUNT_THRUSTING_ktCEu = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_BLUNT_THRUSTING_ktCEu_Value));
+         CHEST_CUT_SWINGING_sQmx7 = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_CUT_SWINGING_sQmx7_Value));
+         CHEST_CUT_THRUSTING_dNomI = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_CUT_THRUSTING_dNomI_Value));
+         CHEST_PIERCE_SWINGING_6ssat = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_PIERCE_SWINGING_6ssat_Value));
+         CHEST_PIERCE_THRUSTING_ybixm = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.CHEST_PIERCE_THRUSTING_ybixm_Value));
+         ABDOMEN_BLUNT_SWINGING_v2v6T = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_BLUNT_SWINGING_v2v6T_Value));
+         ABDOMEN_BLUNT_THRUSTING_6gLsx = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_BLUNT_THRUSTING_6gLsx_Value));
+         ABDOMEN_CUT_SWINGING_tRqGA = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_CUT_SWINGING_tRqGA_Value));
+         ABDOMEN_CUT_THRUSTING_eypTb = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_CUT_THRUSTING_eypTb_Value));
+         ABDOMEN_PIERCE_SWINGING_VTO6S = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_PIERCE_SWINGING_VTO6S_Value));
+         ABDOMEN_PIERCE_THRUSTING_suxMY = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ABDOMEN_PIERCE_THRUSTING_suxMY_Value));
+         SHOULDERS_BLUNT_SWINGING_TplnH = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_BLUNT_SWINGING_TplnH_Value));
+         SHOULDERS_BLUNT_THRUSTING_gqk9L = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_BLUNT_THRUSTING_gqk9L_Value));
+         SHOULDERS_CUT_SWINGING_8yoXK = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_CUT_SWINGING_8yoXK_Value));
+         SHOULDERS_CUT_THRUSTING_2Y1ez = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_CUT_THRUSTING_2Y1ez_Value));
+         SHOULDERS_PIERCE_SWINGING_HoWbh = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_PIERCE_SWINGING_HoWbh_Value));
+         SHOULDERS_PIERCE_THRUSTING_UhpJO = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.SHOULDERS_PIERCE_THRUSTING_UhpJO_Value));
+         ARMS_BLUNT_SWINGING_zwGj0 = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_BLUNT_SWINGING_zwGj0_Value));
+         ARMS_BLUNT_THRUSTING_E9s8D = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_BLUNT_THRUSTING_E9s8D_Value));
+         ARMS_CUT_SWINGING_eMIfX = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_CUT_SWINGING_eMIfX_Value));
+         ARMS_CUT_THRUSTING_uHDMI = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_CUT_THRUSTING_uHDMI_Value));
+         ARMS_PIERCE_SWINGING_ScPD3 = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_PIERCE_SWINGING_ScPD3_Value));
+         ARMS_PIERCE_THRUSTING_7R3oW = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.ARMS_PIERCE_THRUSTING_7R3oW_Value));
+         LEGS_BLUNT_SWINGING_JTLxV = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_BLUNT_SWINGING_JTLxV_Value));
+         LEGS_BLUNT_THRUSTING_awuSL = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_BLUNT_THRUSTING_awuSL_Value));
+         LEGS_CUT_SWINGING_xOKtK = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_CUT_SWINGING_xOKtK_Value));
+         LEGS_CUT_THRUSTING_hEsET = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_CUT_THRUSTING_hEsET_Value));
+         LEGS_PIERCE_SWINGING_6DD8t = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_PIERCE_SWINGING_6DD8t_Value));
+         LEGS_PIERCE_THRUSTING_NblKm = _staggerStrengthOptions.Convert(_configLoader.RetrieveAlphaValueFrom(_loadedOptions, _optionsReader.UnseatValues.LEGS_PIERCE_THRUSTING_NblKm_Value));
       }
 
       #endregion
    }
 
 
-   public class ImpactUnseatChanceValueParams : ImpactUnseatChanceValueConstructorParams
+   public class ImpactUnseatChanceValue_params : ImpactUnseatChanceValueConstructorParams
    {
-      public ImpactUnseatChanceValueParams(in string[] loadedOptions,
-                                           in ConfigurationLoader configLoader,
-                                           in UnseatOptionReader optionsReader,
-                                           in StaggerStrengthOptions staggerStrengthOptions)
+      public ImpactUnseatChanceValue_params(in string[] loadedOptions,
+                                            in ConfigurationLoader configLoader,
+                                            in UnseatOptionReader optionsReader,
+                                            in StaggerStrengthOptions staggerStrengthOptions)
       {
          LoadedOptions = loadedOptions;
          ConfigLoader = configLoader;
