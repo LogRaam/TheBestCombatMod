@@ -55,85 +55,27 @@ namespace TheBestCombatMod.Concept
       StaggerStrengthOptions UnseatStaggerStrengthOptions { get; set; }
       WeaponStaggerForce WeaponStaggerForceValue { get; set; }
       WeaponType Dagger(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType DaggerChainmailKnockedDownDto();
-      AttackType DaggerChainmailUnseatDto();
-      AttackType DaggerClothKnockedDownDto();
-      AttackType DaggerClothUnseatDto();
-      AttackType DaggerLeatherKnockedDownDto();
-      AttackType DaggerLeatherUnseatDto();
-      AttackType DaggerPlateKnockedDownDto();
-      AttackType DaggerPlateUnseatDto();
+
       WeaponType Javelin(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType JavelinChainmailKnockedDownDto();
-      AttackType JavelinChainmailUnseatDto();
-      AttackType JavelinClothKnockedDownDto();
-      AttackType JavelinClothUnseatDto();
-      AttackType JavelinLeatherKnockedDownDto();
-      AttackType JavelinLeatherUnseatDto();
-      AttackType JavelinPlateKnockedDownDto();
-      AttackType JavelinPlateUnseatDto();
+
       WeaponType OneHandedAxe(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType OneHandedAxeChainmailKnockedDownDto();
-      AttackType OneHandedAxeChainmailUnseatDto();
-      AttackType OneHandedAxeClothKnockedDownDto();
-      AttackType OneHandedAxeClothUnseatDto();
-      AttackType OneHandedAxeLeatherKnockedDownDto();
-      AttackType OneHandedAxeLeatherUnseatDto();
-      AttackType OneHandedAxePlateKnockedDownDto();
-      AttackType OneHandedAxePlateUnseatDto();
-      AttackType OneHandedMaceChainmailKnockedDownDto();
-      AttackType OneHandedMaceChainmailUnseatDto();
-      AttackType OneHandedMaceClothKnockedDownDto();
-      AttackType OneHandedMaceClothUnseatDto();
-      AttackType OneHandedMaceLeatherKnockedDownDto();
-      AttackType OneHandedMaceLeatherUnseatDto();
-      AttackType OneHandedMacePlateKnockedDownDto();
-      AttackType OneHandedMacePlateUnseatDto();
+
       WeaponType OneHandedPolearm(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType OneHandedPolearmChainmailUnseatDto();
-      AttackType OneHandedPolearmClothUnseatDto();
-      AttackType OneHandedPolearmLeatherUnseatDto();
-      AttackType OneHandedPolearmPlateUnseatDto();
+
       WeaponType OneHandedSword(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType OneHandedSwordChainmailUnseatDto();
-      AttackType OneHandedSwordClothUnseatDto();
-      AttackType OneHandedSwordLeatherUnseatDto();
-      AttackType OneHandedSwordPlateUnseatDto();
+
       WeaponType OneHandedUnseatMace(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
       OptionFileContent OptionFileContent(ConfigurationLoader loader);
       WeaponType Pick(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType PickChainmailUnseatDto();
-      AttackType PickClothUnseatDto();
-      AttackType PickLeatherUnseatDto();
-      AttackType PickPlateUnseatDto();
+
       WeaponType Stone(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType StoneChainmailUnseatDto();
-      AttackType StoneClothUnseatDto();
-      AttackType StoneLeatherUnseatDto();
-      AttackType StonePlateUnseatDto();
+
       WeaponType TwoHandedAxe(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType TwoHandedAxeChainmailUnseatDto();
-      AttackType TwoHandedAxeClothUnseatDto();
-      AttackType TwoHandedAxeLeatherUnseatDto();
-      AttackType TwoHandedAxePlateUnseatDto();
+
       WeaponType TwoHandedMace(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType TwoHandedMaceChainmailKnockedDownDto();
-      AttackType TwoHandedMaceChainmailUnseatDto();
-      AttackType TwoHandedMaceClothKnockedDownDto();
-      AttackType TwoHandedMaceClothUnseatDto();
-      AttackType TwoHandedMaceLeatherKnockedDownDto();
-      AttackType TwoHandedMaceLeatherUnseatDto();
-      AttackType TwoHandedMacePlateKnockedDownDto();
-      AttackType TwoHandedMacePlateUnseatDto();
+
       WeaponType TwoHandedPolearm(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType TwoHandedPolearmChainmailUnseatDto();
-      AttackType TwoHandedPolearmClothUnseatDto();
-      AttackType TwoHandedPolearmLeatherUnseatDto();
-      AttackType TwoHandedPolearmPlateUnseatDto();
+
       WeaponType TwoHandedSword(in StrikeType strikeType, in DamageTypes damageType, in ArmorComponent.ArmorMaterialTypes materialType);
-      AttackType TwoHandedSwordChainmailUnseatDto();
-      AttackType TwoHandedSwordClothUnseatDto();
-      AttackType TwoHandedSwordLeatherUnseatDto();
-      AttackType TwoHandedSwordPlateUnseatDto();
    }
 }
